@@ -170,7 +170,6 @@ xsbench : $(WDEPS)
 memcached : $(WDEPS)
 	+make -C $(WORKLOADS) memcached
 	cp $(WORKLOADS)/bin/bench_memcached_mt build
-	cp $(WORKLOADS)/bin/bench_memcached_dump build
 
 
 ###############################################################################
