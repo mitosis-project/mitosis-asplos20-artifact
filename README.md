@@ -56,7 +56,7 @@ sudo apt-get install build-essential libncurses-dev \
                      bison flex libssl-dev libelf-dev \
                      libnuma-dev python3 python3 python3-pip \
                      python3-matplotlib python3-numpy \
-                     git wget
+                     git wget kernel-package
 ```                       
 
 In addition the following python libraries, installed with pip
