@@ -8,7 +8,8 @@
 ###############################################################################
 
 all: mitosis-linux mitosis-numactl btree canneal graph500 \
-     gups hashjoin liblinear pagerank redis xsbench memops
+     gups hashjoin liblinear pagerank redis xsbench memops \
+     memcached
 
 CC = gcc-8
 
@@ -64,6 +65,7 @@ mitosis-numactl: $(NDEPS)sources/mitosis-numactl/Makefile
 # Workloads
 ###############################################################################
 
+WORKLOADS=sources/mitosis-workloads
 WDEPS=sources/mitosis-workloads/README.md
 
 sources/mitosis-workloads/README.md:
@@ -71,62 +73,110 @@ sources/mitosis-workloads/README.md:
 	git submodule init 
 	git submodule update
 
+
 ###############################################################################
 # BTree
 ###############################################################################
 
 btree : $(WDEPS)
+	+make -C $(WORKLOADS) btree
+	cp $(WORKLOADS)/bin/bench_btree_st build
+	cp $(WORKLOADS)/bin/bench_btree_mt build
+	cp $(WORKLOADS)/bin/bench_btree_dump build
+
 
 ###############################################################################
 # Canneal
 ###############################################################################
 
 canneal : $(WDEPS)
+	+make -C $(WORKLOADS) canneal
+	cp $(WORKLOADS)/bin/bench_canneal_st build
+	cp $(WORKLOADS)/bin/bench_canneal_dump build
+	cp $(WORKLOADS)/bin/bench_canneal_mt build
+
 
 ###############################################################################
 # Graph500
 ###############################################################################
 
 graph500 : $(WDEPS)
+	+make -C $(WORKLOADS) graph500
+	cp $(WORKLOADS)/bin/bench_graph500_dump build
+	cp $(WORKLOADS)/bin/bench_graph500_mt build
+
 
 ###############################################################################
 # Gups
 ###############################################################################
 
 gups : $(WDEPS)
+	+make -C $(WORKLOADS) gups
+	cp $(WORKLOADS)/bin/bench_gups_st build
+
 
 ###############################################################################
 # HashJoin
 ###############################################################################
 
 hashjoin : $(WDEPS)
+	+make -C $(WORKLOADS) hashjoin
+	cp $(WORKLOADS)/bin/bench_hashjoin_st build
+	cp $(WORKLOADS)/bin/bench_hashjoin_mt build
+	cp $(WORKLOADS)/bin/bench_hashjoin_dump build
+
 
 ###############################################################################
 # LibLinear
 ###############################################################################
 
 liblinear : $(WDEPS)
+	+make -C $(WORKLOADS) liblinear
+	cp $(WORKLOADS)/bin/bench_liblinear_st build
+
 
 ###############################################################################
 # PageRank
 ###############################################################################
 
 pagerank : $(WDEPS)
+	+make -C $(WORKLOADS) pagerank
+	cp $(WORKLOADS)/bin/bench_pagerank_st build
+
 
 ###############################################################################
 # Redis
 ###############################################################################
 
 redis : $(WDEPS)
+	+make -C $(WORKLOADS) redis
+	cp $(WORKLOADS)/bin/bench_redis_st build
+
 
 ###############################################################################
 # XSBench
 ###############################################################################
 
 xsbench : $(WDEPS)
+	+make -C $(WORKLOADS) xsbench
+	cp $(WORKLOADS)/bin/bench_xsbench_mt build
+	cp $(WORKLOADS)/bin/bench_xsbench_dump build
+	
+
+###############################################################################
+# Memcached
+###############################################################################
+
+memcached : $(WDEPS)
+	+make -C $(WORKLOADS) memcached
+	cp $(WORKLOADS)/bin/bench_memcached_mt build
+	cp $(WORKLOADS)/bin/bench_memcached_dump build
+
 
 ###############################################################################
 # Memops
 ###############################################################################
 
 memops: $(WDEPS)
+	+make -C $(WORKLOADS) memops
+	cp $(WORKLOADS)/bin/bench_memops build
