@@ -103,7 +103,7 @@ To compile everything just type `make`
 To compile the different binaries individually, type:
 
  * Mitosis Linux Kernel:  `make mitosis-linux`
- * Mitosis numactl: `make mitosis-numaclt`
+ * Mitosis numactl: `make mitosis-numactl`
  * BTree: `make btree`
  * Canneal: `make canneal`
  * Graph500: `make graph500`
