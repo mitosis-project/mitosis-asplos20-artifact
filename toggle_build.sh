@@ -31,4 +31,5 @@ if [[ "$BINDIR" == "precompiled" ]]; then
 	echo "Using pre-compiled binaries"
 	rm -f $ROOT/bin
 	ln -s $ROOT/build $ROOT/bin
+	exit 0
 fi
