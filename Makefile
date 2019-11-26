@@ -179,3 +179,13 @@ memcached : $(WDEPS)
 memops: $(WDEPS)
 	+make -C $(WORKLOADS) memops
 	cp $(WORKLOADS)/bin/bench_memops build
+
+
+###############################################################################
+# Memops
+###############################################################################
+
+stream: $(WDEPS)
+	+make -C $(WORKLOADS) stream
+	cp $(WORKLOADS)/bin/bench_stream build
+	cp $(WORKLOADS)/bin/bench_stream_numa build
