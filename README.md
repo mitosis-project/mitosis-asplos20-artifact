@@ -80,7 +80,7 @@ To obtain the pre-compiled binaries execute:
 ```
 ./download_binaries.sh
 ```
-The pre-compiled binaries are available on (https://zenodo.org/)[Zenodo.org]. 
+The pre-compiled binaries are available on [Zenodo.org](https://zenodo.org/). 
 You can download them manually and place them in the `precompiled` directory. 
 
 
@@ -114,6 +114,7 @@ To compile the different binaries individually, type:
  * Redis: `make redis`
  * XSBench: `make xsbench`
  * memops: `make memops`
+ * memcached: `make memcached`
 
 
 Evaluation Preparation
