@@ -102,8 +102,8 @@ canneal : $(WDEPS)
 
 graph500 : $(WDEPS)
 	+make -C $(WORKLOADS) graph500
-	cp $(WORKLOADS)/bin/bench_graph500_dump build
 	cp $(WORKLOADS)/bin/bench_graph500_mt build
+	cp $(WORKLOADS)/bin/bench_graph500_st build
 
 
 ###############################################################################
