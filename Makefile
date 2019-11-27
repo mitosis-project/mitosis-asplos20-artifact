@@ -143,6 +143,7 @@ graph500 : $(WDEPS)
 gups : $(WDEPS)
 	+make -C $(WORKLOADS) gups
 	cp $(WORKLOADS)/bin/bench_gups_st build
+	cp $(WORKLOADS)/bin/bench_gups_toy build
 
 
 ###############################################################################
