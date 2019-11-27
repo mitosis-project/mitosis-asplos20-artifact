@@ -1,5 +1,7 @@
 #! /bin/bash
 
+set -e
+
 ###############################################################################
 # Site Configuration file
 # 
@@ -9,14 +11,26 @@
 #          Abhishek Bhattacharjee, and Ashish Panwar
 ###############################################################################
 
-ZENODO_DOI=10.5281/zenodo.3552960
+ZENODO_DOI=10.5281/zenodo.3553474
 
-# zenodo_get.py -w WGET  10.5281/zenodo.3552960
+echo "Downloading artifact from doi::$ZENODO_DOI"
 
-FILES=""
+pushd precompiled > /dev/null
+
+if [[ ! -f artifactfiles.list ]]; then
+    echo "> Downloading artifact list using zenodo_get"
+    zenodo_get.py -w artifactfiles.list $ZENODO_DOI
+else
+    echo "> Reusing artifact list"
+fi
+
+FILES=$(cat artifactfiles.list)
 
 for f in $FILES; do
     echo "Downloading $f..."
-    (cd precompiled && wget $f)
+    wget $f
 done
+
+md5sum -c md5sums.txt
  
+popd > /dev/null
