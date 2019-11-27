@@ -7,11 +7,11 @@
 #          Abhishek Bhattacharjee, and Ashish Panwar
 ###############################################################################
 
-all: mitosis-linux mitosis-linux.deb mitosis-numactl btree canneal \
-	 graph500 gups hashjoin liblinear pagerank redis xsbench memops \
-     memcached
+all: mitosis-linux mitosis-linux.deb mitosis-numactl mitosis-perf \
+	 btree canneal graph500 gups hashjoin liblinear pagerank redis \
+	 xsbench memops memcached
 
-linux: mitosis-linux mitosis-linux.deb mitosis-numactl
+linux: mitosis-linux mitosis-linux.deb mitosis-numactl mitosis-perf
 
 workloads: btree canneal graph500 gups hashjoin liblinear pagerank redis \
 		   xsbench memops memcached
