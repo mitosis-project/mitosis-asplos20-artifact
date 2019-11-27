@@ -11,6 +11,11 @@ all: mitosis-linux mitosis-linux.deb mitosis-numactl btree canneal \
 	 graph500 gups hashjoin liblinear pagerank redis xsbench memops \
      memcached
 
+linux: mitosis-linux mitosis-linux.deb mitosis-numactl
+
+workloads: btree canneal graph500 gups hashjoin liblinear pagerank redis \
+		   xsbench memops memcached
+
 CC = gcc-8
 
 NPROCS:=1
@@ -32,12 +37,13 @@ endif
 ###############################################################################
 
 IMAGE=asplos20-mitosis-dockerimage
+USER:=$(shell id -u)
 
-docker-build : docker/Dockerfile
+docker-image : docker/Dockerfile
 	docker build -t $(IMAGE) docker
 	
-docker-use:
-	docker run -u $(id -u) -i -t \
+docker-run:
+	docker run -u $(USER) -i -t \
     --mount type=bind,source=$(CURDIR),target=/source \
     $(IMAGE)
 
@@ -57,7 +63,7 @@ sources/mitosis-linux/.config: $(LDEPS) sources/mitosis-linux.config
 	cp sources/mitosis-linux.config sources/mitosis-linux/.config
 
 mitosis-linux: $(LDEPS) sources/mitosis-linux/.config 
-	+make CC=$(CC) -C sources/mitosis-linux
+	+$(MAKE)EXTRAVERSION=-mitosis ARCH=x86_64 CC=$(CC) -C sources/mitosis-linux
 	cp sources/mitosis-linux/arch/x86_64/boot/bzImage build
 	cp sources/mitosis-linux/vmlinux build
 
@@ -86,7 +92,7 @@ sources/mitosis-numactl/Makefile: sources/mitosis-numactl/configure
 	(cd sources/mitosis-numactl && ./configure)
 
 mitosis-numactl: $(NDEPS) sources/mitosis-numactl/Makefile
-	+make -C sources/mitosis-numactl 
+	+$(MAKE) -C sources/mitosis-numactl 
 	cp sources/mitosis-numactl/.libs/libnuma.la build
 	cp sources/mitosis-numactl/.libs/libnuma.so* build
 	cp sources/mitosis-numactl/.libs/numactl build
@@ -110,7 +116,7 @@ sources/mitosis-workloads/README.md:
 ###############################################################################
 
 btree : $(WDEPS)
-	+make -C $(WORKLOADS) btree
+	+$(MAKE) -C $(WORKLOADS) btree
 	cp $(WORKLOADS)/bin/bench_btree_st build
 	cp $(WORKLOADS)/bin/bench_btree_mt build
 	cp $(WORKLOADS)/bin/bench_btree_dump build
@@ -121,7 +127,7 @@ btree : $(WDEPS)
 ###############################################################################
 
 canneal : $(WDEPS)
-	+make -C $(WORKLOADS) canneal
+	+$(MAKE) -C $(WORKLOADS) canneal
 	cp $(WORKLOADS)/bin/bench_canneal_st build
 	cp $(WORKLOADS)/bin/bench_canneal_mt build
 
@@ -131,7 +137,7 @@ canneal : $(WDEPS)
 ###############################################################################
 
 graph500 : $(WDEPS)
-	+make -C $(WORKLOADS) graph500
+	+$(MAKE) -C $(WORKLOADS) graph500
 	cp $(WORKLOADS)/bin/bench_graph500_mt build
 	cp $(WORKLOADS)/bin/bench_graph500_st build
 
@@ -141,7 +147,7 @@ graph500 : $(WDEPS)
 ###############################################################################
 
 gups : $(WDEPS)
-	+make -C $(WORKLOADS) gups
+	+$(MAKE) -C $(WORKLOADS) gups
 	cp $(WORKLOADS)/bin/bench_gups_st build
 	cp $(WORKLOADS)/bin/bench_gups_toy build
 
@@ -151,7 +157,7 @@ gups : $(WDEPS)
 ###############################################################################
 
 hashjoin : $(WDEPS)
-	+make -C $(WORKLOADS) hashjoin
+	+$(MAKE) -C $(WORKLOADS) hashjoin
 	cp $(WORKLOADS)/bin/bench_hashjoin_st build
 	cp $(WORKLOADS)/bin/bench_hashjoin_mt build
 	cp $(WORKLOADS)/bin/bench_hashjoin_dump build
@@ -162,7 +168,7 @@ hashjoin : $(WDEPS)
 ###############################################################################
 
 liblinear : $(WDEPS)
-	+make -C $(WORKLOADS) liblinear
+	+$(MAKE) -C $(WORKLOADS) liblinear
 	cp $(WORKLOADS)/bin/bench_liblinear_mt build
 
 
@@ -171,7 +177,7 @@ liblinear : $(WDEPS)
 ###############################################################################
 
 pagerank : $(WDEPS)
-	+make -C $(WORKLOADS) pagerank
+	+$(MAKE) -C $(WORKLOADS) pagerank
 	cp $(WORKLOADS)/bin/bench_pagerank_mt build
 
 
@@ -180,7 +186,7 @@ pagerank : $(WDEPS)
 ###############################################################################
 
 redis : $(WDEPS)
-	+make -C $(WORKLOADS) redis
+	+$(MAKE) -C $(WORKLOADS) redis
 	cp $(WORKLOADS)/bin/bench_redis_st build
 
 
@@ -189,7 +195,7 @@ redis : $(WDEPS)
 ###############################################################################
 
 xsbench : $(WDEPS)
-	+make -C $(WORKLOADS) xsbench
+	+$(MAKE) -C $(WORKLOADS) xsbench
 	cp $(WORKLOADS)/bin/bench_xsbench_mt build
 	cp $(WORKLOADS)/bin/bench_xsbench_dump build
 	
@@ -199,7 +205,7 @@ xsbench : $(WDEPS)
 ###############################################################################
 
 memcached : $(WDEPS)
-	+make -C $(WORKLOADS) memcached
+	+$(MAKE) -C $(WORKLOADS) memcached
 	cp $(WORKLOADS)/bin/bench_memcached_mt build
 
 
@@ -208,15 +214,25 @@ memcached : $(WDEPS)
 ###############################################################################
 
 memops: $(WDEPS)
-	+make -C $(WORKLOADS) memops
+	+$(MAKE) -C $(WORKLOADS) memops
 	cp $(WORKLOADS)/bin/bench_memops build
 
 
 ###############################################################################
-# Memops
+# Stream
 ###############################################################################
 
 stream: $(WDEPS)
-	+make -C $(WORKLOADS) stream
+	+$(MAKE) -C $(WORKLOADS) stream
 	cp $(WORKLOADS)/bin/bench_stream build
 	cp $(WORKLOADS)/bin/bench_stream_numa build
+
+###############################################################################
+# Clean
+###############################################################################
+
+clean:
+	+$(MAKE) -C $(WORKLOADS) clean
+
+clean-workloads:
+	+$(MAKE) -C $(WORKLOADS) clean
