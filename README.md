@@ -164,7 +164,7 @@ When you collected all the experimental data, you can compare them against
 the reference data shown in the paper:
 
 ```
-./compare_all.sh
+./compile_report.sh
 ```
 
 

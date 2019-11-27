@@ -10,12 +10,19 @@
 ###############################################################################
 
 
+echo "Generating Plots..."
+echo " > TODO!"
+
 pushd evaluation > /dev/null
 
-echo "Generating Report..."
+echo "Generating Reports..."
+echo " > artifact-evaluation.html"
 pandoc -o artifact-evaluation.html artifact-evaluation.md
+
+echo " > artifact-evaluation.pdf"
 pandoc -o artifact-evaluation.pdf artifact-evaluation.md
 
 popd > /dev/null
 
+echo "Opening PDF."
 xdg-open evaluation/artifact-evaluation.pdf
