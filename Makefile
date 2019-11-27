@@ -16,7 +16,7 @@ linux: mitosis-linux mitosis-linux.deb mitosis-numactl
 workloads: btree canneal graph500 gups hashjoin liblinear pagerank redis \
 		   xsbench memops memcached
 
-CC = gcc-8
+CC = gcc
 
 NPROCS:=1
 OS:=$(shell uname -s)
