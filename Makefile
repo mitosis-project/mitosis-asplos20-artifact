@@ -7,11 +7,40 @@
 #          Abhishek Bhattacharjee, and Ashish Panwar
 ###############################################################################
 
-all: mitosis-linux mitosis-numactl btree canneal graph500 \
-     gups hashjoin liblinear pagerank redis xsbench memops \
+all: mitosis-linux mitosis-linux.deb mitosis-numactl btree canneal \
+	 graph500 gups hashjoin liblinear pagerank redis xsbench memops \
      memcached
 
 CC = gcc-8
+
+NPROCS:=1
+OS:=$(shell uname -s)
+
+ifeq ($J,)
+ifeq ($(OS),Linux)
+  NPROCS := $(shell nproc)
+else ifeq ($(OS),Darwin)
+  NPROCS := $(shell system_profiler | awk '/Number of CPUs/ {print $$4}{next;}')
+endif # $(OS)
+else
+	NPROCS := $J
+endif 
+
+
+###############################################################################
+# Docker Image
+###############################################################################
+
+IMAGE=asplos20-mitosis-dockerimage
+
+docker-build : docker/Dockerfile
+	docker build -t $(IMAGE) docker
+	
+docker-use:
+	docker run -u $(id -u) -i -t \
+    --mount type=bind,source=$(CURDIR),target=/source \
+    $(IMAGE)
+
 
 ###############################################################################
 # mitosis-linux
@@ -31,11 +60,13 @@ mitosis-linux: $(LDEPS) sources/mitosis-linux/.config
 	+make CC=$(CC) -C sources/mitosis-linux
 	cp sources/mitosis-linux/arch/x86_64/boot/bzImage build
 	cp sources/mitosis-linux/vmlinux build
-	echo $(MAKEFLAGS)
-	echo $(MFLAGS)
+
+mitosis-linux.deb: $(LDEPS) sources/mitosis-linux/.config
 	(cd sources/mitosis-linux && \
-		MAKEFLAGS= MFLAGS= CC=$(CC) fakeroot make-kpkg --initrd --append-to-version=-mitosis kernel_image  kernel_headers)
+		MAKEFLAGS= MFLAGS= CC=$(CC) fakeroot make-kpkg -j $(NPROCS) \
+		--initrd --append-to-version=-mitosis kernel_image  kernel_headers)
 	cp sources/*.deb build
+
 
 ###############################################################################
 # mitosis-numactl
@@ -43,7 +74,7 @@ mitosis-linux: $(LDEPS) sources/mitosis-linux/.config
 
 NDEPS=sources/mitosis-workloads/README.md
 
-sources/mitosis-numactl/README.md:
+sources/mitosis-numactl/README.md :
 	echo "initialized git submodules"
 	git submodule init 
 	git submodule update
@@ -54,7 +85,7 @@ sources/mitosis-numactl/configure:
 sources/mitosis-numactl/Makefile: sources/mitosis-numactl/configure
 	(cd sources/mitosis-numactl && ./configure)
 
-mitosis-numactl: $(NDEPS)sources/mitosis-numactl/Makefile
+mitosis-numactl: $(NDEPS) sources/mitosis-numactl/Makefile
 	+make -C sources/mitosis-numactl 
 	cp sources/mitosis-numactl/.libs/libnuma.la build
 	cp sources/mitosis-numactl/.libs/libnuma.so* build
@@ -92,7 +123,6 @@ btree : $(WDEPS)
 canneal : $(WDEPS)
 	+make -C $(WORKLOADS) canneal
 	cp $(WORKLOADS)/bin/bench_canneal_st build
-	cp $(WORKLOADS)/bin/bench_canneal_dump build
 	cp $(WORKLOADS)/bin/bench_canneal_mt build
 
 
@@ -132,7 +162,7 @@ hashjoin : $(WDEPS)
 
 liblinear : $(WDEPS)
 	+make -C $(WORKLOADS) liblinear
-	cp $(WORKLOADS)/bin/bench_liblinear_st build
+	cp $(WORKLOADS)/bin/bench_liblinear_mt build
 
 
 ###############################################################################
@@ -141,7 +171,7 @@ liblinear : $(WDEPS)
 
 pagerank : $(WDEPS)
 	+make -C $(WORKLOADS) pagerank
-	cp $(WORKLOADS)/bin/bench_pagerank_st build
+	cp $(WORKLOADS)/bin/bench_pagerank_mt build
 
 
 ###############################################################################

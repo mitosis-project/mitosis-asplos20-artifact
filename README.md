@@ -2,7 +2,7 @@ Mitosis ASPLOS'20 Artifact Evaluation
 =====================================
 
 This repository contains scripts for the ASPLOS'20 artifact evaluation
-of the paper **Mitosis - Mitosis: Transparently Self-Replicating Page-Tables 
+of the paper **Mitosis: Transparently Self-Replicating Page-Tables 
 for Large-Memory Machines** by Reto Achermann, Jayneel Gandhi, 
 Timothy Roscoe, Abhishek Bhattacharjee, and Ashish Panwar.
 
@@ -56,7 +56,8 @@ sudo apt-get install build-essential libncurses-dev \
                      bison flex libssl-dev libelf-dev \
                      libnuma-dev python3 python3 python3-pip \
                      python3-matplotlib python3-numpy \
-                     git wget kernel-package
+                     git wget kernel-package fakeroot ccache \
+                     libncurses5-dev wget
 ```                       
 
 In addition the following python libraries, installed with pip
