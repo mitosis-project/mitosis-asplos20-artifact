@@ -9,11 +9,21 @@
 #          Abhishek Bhattacharjee, and Ashish Panwar
 ###############################################################################
 
+ROOT=$(dirname `readlink -f "$0"`)
+
+pushd "$ROOT/evaluation" > /dev/null
 
 echo "Generating Plots..."
 echo " > TODO!"
-
-pushd evaluation > /dev/null
+echo " > Figure 1"
+echo " > Figure 3"
+echo " > Figure 4"
+echo " > Figure 6"
+echo " > Figure 9"
+echo " > Figure 10"
+echo " > Figure 11"
+echo " > Table 5"
+echo " > Table 6"
 
 echo "Generating Reports..."
 echo " > artifact-evaluation.html"
