@@ -63,7 +63,8 @@ sources/mitosis-linux/.config: $(LDEPS) sources/mitosis-linux.config
 	cp sources/mitosis-linux.config sources/mitosis-linux/.config
 
 mitosis-linux: $(LDEPS) sources/mitosis-linux/.config 
-	+$(MAKE)EXTRAVERSION=-mitosis ARCH=x86_64 CC=$(CC) -C sources/mitosis-linux
+	+$(MAKE) EXTRAVERSION=-mitosis ARCH=x86_64 CC=$(CC) \
+		-C sources/mitosis-linux
 	cp sources/mitosis-linux/arch/x86_64/boot/bzImage build
 	cp sources/mitosis-linux/vmlinux build
 
@@ -72,6 +73,11 @@ mitosis-linux.deb: $(LDEPS) sources/mitosis-linux/.config
 		MAKEFLAGS= MFLAGS= CC=$(CC) fakeroot make-kpkg -j $(NPROCS) \
 		--initrd --append-to-version=-mitosis kernel_image  kernel_headers)
 	cp sources/*.deb build
+
+mitosis-perf:
+	+$(MAKE) EXTRAVERSION=-mitosis ARCH=x86_64 CC=$(CC) \
+		-C sources/mitosis-linux/tools/perf
+	cp sources/mitosis-linux/tools/perf/perf build
 
 
 ###############################################################################
