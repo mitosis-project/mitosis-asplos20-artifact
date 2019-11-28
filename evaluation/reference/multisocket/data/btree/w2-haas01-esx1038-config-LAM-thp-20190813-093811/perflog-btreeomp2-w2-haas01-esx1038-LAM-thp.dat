@@ -1,0 +1,24 @@
+[description]
+Microbenchmark Runlog
+[workload]
+btreeomp2
+[name]
+btreeomp2
+[date]
+20190813-093811
+[hostname]
+w2-haas01-esx1038
+[kernel]
+4.17.0lptr+
+[autonuma]
+1
+[openmp]
+
+[smt]
+on
+[columns]
+run,data,ptables,thp,pti,di,mi
+
+@<exp>
+@ /home/ashish/mitosis-tools/bin/numactl --pgtablerepl=3 --strict -- /home/ashish/mitosis-tools/bin/btreeomp2 
+,,0,,,,1

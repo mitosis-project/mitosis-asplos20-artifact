@@ -1,0 +1,48 @@
+[description]
+Microbenchmark Runlog
+[workload]
+btreeomp2
+[name]
+btreeomp2
+[date]
+20190813-080536
+[hostname]
+w2-haas01-esx1038
+[kernel]
+4.17.0lptr+
+[autonuma]
+0
+[openmp]
+
+[smt]
+on
+[columns]
+run,data,ptables,thp,pti,di,mi
+
+@<exp>
+@ /home/ashish/mitosis-tools/bin/btreeomp2 
+,,0,,,,0
+# started on Tue Aug 13 08:18:04 2019
+
+168897672685215,,cycles,17038031658536,25.08,,
+872058841987,,dTLB-loads,18030492907312,26.55,,
+510956679456,,dTLB-load-misses,18043568816892,26.57,58.59,of all dTLB cache hits
+91170797882,,dTLB-stores,14414436474113,21.22,,
+44984321,,dTLB-store-misses,14904367992130,21.94,,
+26323839858967,,dtlb_load_misses.walk_duration,16781197644742,24.71,,
+4529085719,,dtlb_store_misses.walk_duration,21719163226061,31.98,,
+502321348560,,dtlb_load_misses.walk_completed,23069290971018,33.97,,
+44707887,,dtlb_store_misses.walk_completed,23530481830117,34.65,,
+0,,EPT.WALK_CYCLES,23220370281395,34.19,,
+@</exp>
+Execution Time (minutes): 10 minutes and 49 seconds.
+Execution Time (seconds): 649
+
+
+
+signalling readyness to /tmp/alloctest-bench.ready
+signalling done to /tmp/alloctest-bench.done
+BTree Elements: 1572864000
+Btree Fanout: 16
+Allocator: 164813 MB
+got 0 matches in 648 seconds

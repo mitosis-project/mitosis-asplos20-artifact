@@ -1,0 +1,58 @@
+[description]
+Microbenchmark Runlog
+[workload]
+svm
+[name]
+svm
+[date]
+20190731-005206
+[hostname]
+w2-haas01-esx1039
+[kernel]
+4.17.0lptr+
+[autonuma]
+0
+[openmp]
+
+[smt]
+on
+[columns]
+run,data,ptables,thp,pti,di,mi
+
+@<exp>
+@ /home/ashish/mitosis-tools/bin/numactl -m 2 -c 2 --strict -- /home/ashish/mitosis-tools/bin/svm -s 6 -n 28 /home/ashish/inputs/kdd12
+2,2,0,,X,,0
+# started on Wed Jul 31 01:00:13 2019
+
+52283442611863,,cycles,8332831658951,39.60,,
+2178421003612,,dTLB-loads,6865124484846,32.63,,
+56506607786,,dTLB-load-misses,6743757051145,32.05,2.59,of all dTLB cache hits
+138517398696,,dTLB-stores,5540702453969,26.33,,
+5623935720,,dTLB-store-misses,5660987542317,26.90,,
+4791320259067,,dtlb_load_misses.walk_duration,5336157392198,25.36,,
+313846214058,,dtlb_store_misses.walk_duration,6655233193080,31.63,,
+0,,EPT.WALK_CYCLES,8337764230406,39.63,,
+@</exp>
+Execution Time (minutes): 18 minutes and 39 seconds.
+Execution Time (seconds): 1119
+
+
+
+numactl: warning. Strict flag for process ignored.
+signalling readyness to /tmp/alloctest-bench.ready
+Total threads used: 28
+Input reading done
+iter   1  #CD cycles 1
+iter   2  #CD cycles 1
+iter   3  #CD cycles 1
+iter   4  #CD cycles 1
+iter   5  #CD cycles 3
+iter   6  #CD cycles 1
+iter   7  #CD cycles 5
+iter   8  #CD cycles 1
+iter   9  #CD cycles 27
+=========================
+optimization finished, #iter = 9
+Objective value = 23439213.539305
+#nonzeros/#features = 440636/54686452
+signalling done to /tmp/alloctest-bench.done

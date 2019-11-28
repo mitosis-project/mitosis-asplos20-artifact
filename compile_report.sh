@@ -11,9 +11,32 @@
 
 ROOT=$(dirname `readlink -f "$0"`)
 
+
+function generate_plots {
+    echo " > $1"
+
+    pushd "$1" > /dev/null
+
+    pushd "singlesocket" > /dev/null
+    echo "   > Single Socket Benchmarks"
+    python3 ./process_logs.py
+    popd > /dev/null
+
+    pushd "multisocket" > /dev/null
+    echo "   > Multi Socket Benchmarks"
+    python3 ./process_logs.py
+    popd > /dev/null
+    popd > /dev/null
+}
+
 pushd "$ROOT/evaluation" > /dev/null
 
 echo "Generating Plots..."
+
+
+generate_plots "reference"
+generate_plots "measured"
+
 echo " > TODO!"
 echo " > Figure 1"
 echo " > Figure 3"

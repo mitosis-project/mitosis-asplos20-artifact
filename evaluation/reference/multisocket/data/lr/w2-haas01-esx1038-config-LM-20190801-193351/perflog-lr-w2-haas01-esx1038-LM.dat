@@ -1,0 +1,60 @@
+[description]
+Microbenchmark Runlog
+[workload]
+lr
+[name]
+lr
+[date]
+20190801-193351
+[hostname]
+w2-haas01-esx1038
+[kernel]
+4.17.0lptr+
+[autonuma]
+0
+[openmp]
+
+[smt]
+on
+[columns]
+run,data,ptables,thp,pti,di,mi
+
+@<exp>
+@ /home/ashish/mitosis-tools/bin/numactl --pgtablerepl=3 --strict -- /home/ashish/mitosis-tools/bin/lr -s 6 -n 112 /home/ashish/inputs/kdd13
+,,0,,,,1
+# started on Thu Aug  1 20:14:46 2019
+
+1970394876082762,,cycles,262715692889059,33.16,,
+75755968751583,,dTLB-loads,197540267398334,24.93,,
+366747559082,,dTLB-load-misses,203077508299150,25.63,0.48,of all dTLB cache hits
+1008297573575,,dTLB-stores,163410178765220,20.63,,
+25220259642,,dTLB-store-misses,165588378760629,20.90,,
+71726784232739,,dtlb_load_misses.walk_duration,153648788065849,19.39,,
+1542137903587,,dtlb_store_misses.walk_duration,198656619619250,25.07,,
+361193031006,,dtlb_load_misses.walk_completed,253189004755531,31.96,,
+27120826509,,dtlb_store_misses.walk_completed,258503327896802,32.63,,
+0,,EPT.WALK_CYCLES,264442827729377,33.38,,
+@</exp>
+Execution Time (minutes): 139 minutes and 57 seconds.
+Execution Time (seconds): 8397
+
+
+
+numactl: warning. Strict flag for process ignored.
+signalling readyness to /tmp/alloctest-bench.ready
+Total threads used: 112
+Input reading done
+iter   1  #CD cycles 1
+iter   2  #CD cycles 1
+iter   3  #CD cycles 1
+iter   4  #CD cycles 1
+iter   5  #CD cycles 3
+iter   6  #CD cycles 1
+iter   7  #CD cycles 6
+iter   8  #CD cycles 1
+iter   9  #CD cycles 23
+=========================
+optimization finished, #iter = 9
+Objective value = 101700270.179262
+#nonzeros/#features = 5461940/54686452
+signalling done to /tmp/alloctest-bench.done

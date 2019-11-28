@@ -1,0 +1,24 @@
+[description]
+Microbenchmark Runlog
+[workload]
+gups
+[name]
+gups
+[date]
+20190802-145757
+[hostname]
+w2-haas01-esx1038
+[kernel]
+4.17.0lptr+
+[autonuma]
+0
+[openmp]
+
+[smt]
+on
+[columns]
+run,data,ptables,thp,pti,di,mi
+
+@<exp>
+@ /home/ashish/mitosis-tools/bin/numactl -m 0 -c 0 --strict -- /home/ashish/mitosis-tools/bin/gups 33 1500000 1024
+0,0,0,,,,0

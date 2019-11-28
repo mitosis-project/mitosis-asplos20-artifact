@@ -1,0 +1,51 @@
+[description]
+Microbenchmark Runlog
+[workload]
+gups
+[name]
+gups
+[date]
+20190802-160240
+[hostname]
+w2-haas01-esx1039
+[kernel]
+4.17.0lptr+
+[autonuma]
+0
+[openmp]
+
+[smt]
+on
+[columns]
+run,data,ptables,thp,pti,di,mi
+
+@<exp>
+@ /home/ashish/mitosis-tools/bin/numactl -m 2 -c 2 --pgtablerepl=3 --strict -- /home/ashish/mitosis-tools/bin/gups 33 1500000 1024
+2,2,0,,,,1
+# started on Fri Aug  2 16:03:01 2019
+
+175364713091,,cycles,35233039730,49.99,,
+4664203859,,dTLB-loads,35237249012,50.00,,
+1538933591,,dTLB-load-misses,35229853030,49.99,32.99,of all dTLB cache hits
+11482919187,,dTLB-stores,17623166150,25.01,,
+308823073,,dTLB-store-misses,17622269315,25.00,,
+74098439948,,dtlb_load_misses.walk_duration,17617528406,25.00,,
+9076757128,,dtlb_store_misses.walk_duration,26425144693,37.49,,
+0,,EPT.WALK_CYCLES,35232706051,49.99,,
+@</exp>
+Execution Time (minutes): 1 minutes and 11 seconds.
+Execution Time (seconds): 71
+
+
+
+numactl: warning. Strict flag for process ignored.
+signalling readyness to /tmp/alloctest-bench.ready
+signalling done to /tmp/alloctest-bench.done
+Number of procs: 1
+Vector size: 8589934592
+Max datums during comm: 0
+Max datums after comm: 1024
+Excess datums (frac): 0 (0)
+Bad locality count: 0
+Update time (secs):    60.208
+Gups:  0.025511

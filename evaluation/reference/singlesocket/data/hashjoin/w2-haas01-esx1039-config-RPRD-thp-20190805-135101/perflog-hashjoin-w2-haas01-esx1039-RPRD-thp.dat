@@ -1,0 +1,54 @@
+[description]
+Microbenchmark Runlog
+[workload]
+hashjoin
+[name]
+hashjoin
+[date]
+20190805-135101
+[hostname]
+w2-haas01-esx1039
+[kernel]
+4.17.0lptr+
+[autonuma]
+0
+[openmp]
+
+[smt]
+on
+[columns]
+run,data,ptables,thp,pti,di,mi
+
+@<exp>
+@ /home/ashish/mitosis-tools/bin/numactl -m 0 -c 2 --strict -- /home/ashish/mitosis-tools/bin/hashjoin 
+2,0,0,,,,0
+# started on Mon Aug  5 13:51:28 2019
+
+842259673051,,cycles,169154487066,50.00,,
+60603150089,,dTLB-loads,169155792195,50.00,,
+2877989862,,dTLB-load-misses,169144481886,50.00,4.75,of all dTLB cache hits
+31585981061,,dTLB-stores,84580120398,25.00,,
+3008,,dTLB-store-misses,84579634975,25.00,,
+80864617426,,dtlb_load_misses.walk_duration,84578704082,25.00,,
+750286,,dtlb_store_misses.walk_duration,126868758515,37.50,,
+0,,EPT.WALK_CYCLES,169155515138,50.00,,
+@</exp>
+Execution Time (minutes): 5 minutes and 39 seconds.
+Execution Time (seconds): 339
+
+
+
+numactl: warning. Strict flag for process ignored.
+signalling readyness to /tmp/alloctest-bench.ready
+signalling done to /tmp/alloctest-bench.done
+allocating 2048 MB memory
+Hashtable Size: 2048MB
+Datatable Size Size: 16384MB
+Element Size: 16384 MB
+Total: 34816 MB
+allocating 4096 MB memory
+allocating 4096 MB memory
+allocating 4096 MB memory
+allocating 4096 MB memory
+allocating 16384 MB memory
+got 2000000000 matches / 0 

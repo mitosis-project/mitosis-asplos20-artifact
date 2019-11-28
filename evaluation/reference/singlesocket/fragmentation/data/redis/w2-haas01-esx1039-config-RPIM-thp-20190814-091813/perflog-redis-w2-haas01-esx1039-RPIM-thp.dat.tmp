@@ -1,0 +1,31 @@
+numactl: warning. Strict flag for process ignored.
+NO signalling readyness to /tmp/alloctest-bench.ready
+/home/ashish/mitosis-tools/bin/redis -r 2 -d 2 -- 
+prog_argv[0]=/home/ashish/mitosis-tools/bin/redis
+<benchmark exec="/home/ashish/mitosis-tools/bin/redis">
+<config>
+  <openmp>off</openmp>  <memsize>1G <memsize>  <hugetlb>0</hugetlb>
+  <data>2</data>  <pte>0</pte>  <run>2</run>
+  <interference>0</interference>
+</config>
+<pagetables>
+Page table dumping disabled.
+</pagetables>
+<run>
+64826:C 14 Aug 09:18:14.113 # oO0OoO0OoO0Oo Redis is starting oO0OoO0OoO0Oo
+64826:C 14 Aug 09:18:14.113 # Redis version=4.0.10, bits=64, commit=26f978ff, modified=1, pid=64826, just started
+64826:C 14 Aug 09:18:14.113 # Warning: no config file specified, using the default config. In order to specify a config file use /home/ashish/mitosis-tools/bin/redis /path/to/redis.conf
+64826:M 14 Aug 09:18:14.113 * Increased maximum number of open files to 10032 (it was originally set to 1024).
+64826:M 14 Aug 09:18:14.114 * Running mode=standalone, port=6379.
+64826:M 14 Aug 09:18:14.114 # WARNING: The TCP backlog setting of 511 cannot be enforced because /proc/sys/net/core/somaxconn is set to the lower value of 128.
+64826:M 14 Aug 09:18:14.114 # Server initialized
+64826:M 14 Aug 09:18:14.114 # WARNING overcommit_memory is set to 0! Background save may fail under low memory condition. To fix this issue add 'vm.overcommit_memory = 1' to /etc/sysctl.conf and then reboot or run the command 'sysctl vm.overcommit_memory=1' for this to take effect.
+64826:M 14 Aug 09:18:14.114 # WARNING you have Transparent Huge Pages (THP) support enabled in your kernel. This will create latency and memory usage issues with Redis. To fix this issue run the command 'echo never > /sys/kernel/mm/transparent_hugepage/enabled' as root, and add it to your /etc/rc.local in order to retain the setting after a reboot. Redis must be restarted after THP is disabled.
+64826:M 14 Aug 09:18:14.114 * Ready to accept connections
+SERVERD DB: 0x22f2d98
+Number of Keys: 256 M
+Estimated workingset size: 64 G
+Key 0 M / 256 M
+Key 9 M / 256 M
+Key 19 M / 256 M
+Key 28 M / 256 M

@@ -1,0 +1,100 @@
+[description]
+Microbenchmark Runlog
+[workload]
+redis
+[name]
+redis
+[date]
+20190731-083939
+[hostname]
+w2-haas01-esx1039
+[kernel]
+4.17.0lptr+
+[autonuma]
+0
+[openmp]
+
+[smt]
+on
+[columns]
+run,data,ptables,thp,pti,di,mi
+
+@<exp>
+@ /home/ashish/mitosis-tools/bin/numactl -m 2 -c 2 --pgtablerepl=3 --strict -- /home/ashish/mitosis-tools/bin/redis 
+2,2,0,,X,,1
+# started on Wed Jul 31 08:49:29 2019
+
+121430592236,,cycles,24399384148,49.99,,
+15787252967,,dTLB-loads,24395792136,49.99,,
+174497084,,dTLB-load-misses,24380980060,49.96,1.11,of all dTLB cache hits
+10674145399,,dTLB-stores,12199824214,25.00,,
+3479078,,dTLB-store-misses,12198236679,24.99,,
+33939225608,,dtlb_load_misses.walk_duration,12209356488,25.02,,
+83226464,,dtlb_store_misses.walk_duration,18304883805,37.51,,
+0,,EPT.WALK_CYCLES,24392668993,49.98,,
+@</exp>
+Execution Time (minutes): 0 minutes and 49 seconds.
+Execution Time (seconds): 49
+
+
+
+numactl: warning. Strict flag for process ignored.
+NO signalling readyness to /tmp/alloctest-bench.ready
+/home/ashish/mitosis-tools/bin/redis 
+prog_argv[0]=/home/ashish/mitosis-tools/bin/redis
+<benchmark exec="/home/ashish/mitosis-tools/bin/redis">
+<config>
+  <openmp>off</openmp>  <memsize>1G <memsize>  <hugetlb>0</hugetlb>
+  <data>0</data>  <pte>0</pte>  <run>0</run>
+  <interference>0</interference>
+</config>
+<pagetables>
+Page table dumping disabled.
+</pagetables>
+<run>
+40420:C 31 Jul 08:39:39.978 # oO0OoO0OoO0Oo Redis is starting oO0OoO0OoO0Oo
+40420:C 31 Jul 08:39:39.978 # Redis version=4.0.10, bits=64, commit=26f978ff, modified=1, pid=40420, just started
+40420:C 31 Jul 08:39:39.978 # Warning: no config file specified, using the default config. In order to specify a config file use /home/ashish/mitosis-tools/bin/redis /path/to/redis.conf
+40420:M 31 Jul 08:39:39.978 * Increased maximum number of open files to 10032 (it was originally set to 1024).
+40420:M 31 Jul 08:39:39.979 * Running mode=standalone, port=6379.
+40420:M 31 Jul 08:39:39.979 # WARNING: The TCP backlog setting of 511 cannot be enforced because /proc/sys/net/core/somaxconn is set to the lower value of 128.
+40420:M 31 Jul 08:39:39.979 # Server initialized
+40420:M 31 Jul 08:39:39.979 # WARNING overcommit_memory is set to 0! Background save may fail under low memory condition. To fix this issue add 'vm.overcommit_memory = 1' to /etc/sysctl.conf and then reboot or run the command 'sysctl vm.overcommit_memory=1' for this to take effect.
+40420:M 31 Jul 08:39:39.979 * Ready to accept connections
+SERVERD DB: 0xd22ce8
+Number of Keys: 256 M
+Estimated workingset size: 64 G
+Key 0 M / 256 M
+Key 9 M / 256 M
+Key 19 M / 256 M
+Key 28 M / 256 M
+Key 38 M / 256 M
+Key 47 M / 256 M
+Key 57 M / 256 M
+Key 66 M / 256 M
+Key 76 M / 256 M
+Key 85 M / 256 M
+Key 95 M / 256 M
+Key 104 M / 256 M
+Key 114 M / 256 M
+Key 123 M / 256 M
+Key 133 M / 256 M
+Key 143 M / 256 M
+Key 152 M / 256 M
+Key 162 M / 256 M
+Key 171 M / 256 M
+Key 181 M / 256 M
+Key 190 M / 256 M
+Key 200 M / 256 M
+Key 209 M / 256 M
+Key 219 M / 256 M
+Key 228 M / 256 M
+Key 238 M / 256 M
+Key 247 M / 256 M
+signalling readyness to /tmp/alloctest-bench.ready
+reader thread started
+</run>
+<pagetables>
+Page table dumping disabled.
+</pagetables>
+</benchmark>

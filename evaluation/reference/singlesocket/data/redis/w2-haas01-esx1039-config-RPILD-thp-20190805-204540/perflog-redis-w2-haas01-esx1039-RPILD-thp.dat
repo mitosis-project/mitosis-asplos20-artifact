@@ -1,0 +1,101 @@
+[description]
+Microbenchmark Runlog
+[workload]
+redis
+[name]
+redis
+[date]
+20190805-204541
+[hostname]
+w2-haas01-esx1039
+[kernel]
+4.17.0lptr+
+[autonuma]
+0
+[openmp]
+
+[smt]
+on
+[columns]
+run,data,ptables,thp,pti,di,mi
+
+@<exp>
+@ /home/ashish/mitosis-tools/bin/numactl -m 2 -c 2 --strict -- /home/ashish/mitosis-tools/bin/redis -r 2 -d 2 --
+2,2,0,,,,0
+# started on Mon Aug  5 20:56:41 2019
+
+192046623114,,cycles,38613583991,50.02,,
+15767280540,,dTLB-loads,38606980646,50.01,,
+156575969,,dTLB-load-misses,38575506741,49.97,0.99,of all dTLB cache hits
+10664628213,,dTLB-stores,19280204009,24.98,,
+2621350,,dTLB-store-misses,19280426370,24.98,,
+103769126272,,dtlb_load_misses.walk_duration,19307515023,25.01,,
+69458676,,dtlb_store_misses.walk_duration,28964617574,37.52,,
+0,,EPT.WALK_CYCLES,38612236547,50.02,,
+@</exp>
+Execution Time (minutes): 1 minutes and 17 seconds.
+Execution Time (seconds): 77
+
+
+
+numactl: warning. Strict flag for process ignored.
+NO signalling readyness to /tmp/alloctest-bench.ready
+/home/ashish/mitosis-tools/bin/redis -r 2 -d 2 -- 
+prog_argv[0]=/home/ashish/mitosis-tools/bin/redis
+<benchmark exec="/home/ashish/mitosis-tools/bin/redis">
+<config>
+  <openmp>off</openmp>  <memsize>1G <memsize>  <hugetlb>0</hugetlb>
+  <data>2</data>  <pte>0</pte>  <run>2</run>
+  <interference>0</interference>
+</config>
+<pagetables>
+Page table dumping disabled.
+</pagetables>
+<run>
+77008:C 05 Aug 20:45:41.024 # oO0OoO0OoO0Oo Redis is starting oO0OoO0OoO0Oo
+77008:C 05 Aug 20:45:41.025 # Redis version=4.0.10, bits=64, commit=26f978ff, modified=1, pid=77008, just started
+77008:C 05 Aug 20:45:41.025 # Warning: no config file specified, using the default config. In order to specify a config file use /home/ashish/mitosis-tools/bin/redis /path/to/redis.conf
+77008:M 05 Aug 20:45:41.025 * Increased maximum number of open files to 10032 (it was originally set to 1024).
+77008:M 05 Aug 20:45:41.026 * Running mode=standalone, port=6379.
+77008:M 05 Aug 20:45:41.026 # WARNING: The TCP backlog setting of 511 cannot be enforced because /proc/sys/net/core/somaxconn is set to the lower value of 128.
+77008:M 05 Aug 20:45:41.026 # Server initialized
+77008:M 05 Aug 20:45:41.026 # WARNING overcommit_memory is set to 0! Background save may fail under low memory condition. To fix this issue add 'vm.overcommit_memory = 1' to /etc/sysctl.conf and then reboot or run the command 'sysctl vm.overcommit_memory=1' for this to take effect.
+77008:M 05 Aug 20:45:41.026 # WARNING you have Transparent Huge Pages (THP) support enabled in your kernel. This will create latency and memory usage issues with Redis. To fix this issue run the command 'echo never > /sys/kernel/mm/transparent_hugepage/enabled' as root, and add it to your /etc/rc.local in order to retain the setting after a reboot. Redis must be restarted after THP is disabled.
+77008:M 05 Aug 20:45:41.026 * Ready to accept connections
+SERVERD DB: 0x209cd98
+Number of Keys: 256 M
+Estimated workingset size: 64 G
+Key 0 M / 256 M
+Key 9 M / 256 M
+Key 19 M / 256 M
+Key 28 M / 256 M
+Key 38 M / 256 M
+Key 47 M / 256 M
+Key 57 M / 256 M
+Key 66 M / 256 M
+Key 76 M / 256 M
+Key 85 M / 256 M
+Key 95 M / 256 M
+Key 104 M / 256 M
+Key 114 M / 256 M
+Key 123 M / 256 M
+Key 133 M / 256 M
+Key 143 M / 256 M
+Key 152 M / 256 M
+Key 162 M / 256 M
+Key 171 M / 256 M
+Key 181 M / 256 M
+Key 190 M / 256 M
+Key 200 M / 256 M
+Key 209 M / 256 M
+Key 219 M / 256 M
+Key 228 M / 256 M
+Key 238 M / 256 M
+Key 247 M / 256 M
+signalling readyness to /tmp/alloctest-bench.ready
+reader thread started
+</run>
+<pagetables>
+Page table dumping disabled.
+</pagetables>
+</benchmark>

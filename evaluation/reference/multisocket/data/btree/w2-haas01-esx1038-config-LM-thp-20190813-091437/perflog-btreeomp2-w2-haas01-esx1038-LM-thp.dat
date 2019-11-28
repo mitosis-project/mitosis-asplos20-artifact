@@ -1,0 +1,49 @@
+[description]
+Microbenchmark Runlog
+[workload]
+btreeomp2
+[name]
+btreeomp2
+[date]
+20190813-091437
+[hostname]
+w2-haas01-esx1038
+[kernel]
+4.17.0lptr+
+[autonuma]
+0
+[openmp]
+
+[smt]
+on
+[columns]
+run,data,ptables,thp,pti,di,mi
+
+@<exp>
+@ /home/ashish/mitosis-tools/bin/numactl --pgtablerepl=3 --strict -- /home/ashish/mitosis-tools/bin/btreeomp2 
+,,0,,,,1
+# started on Tue Aug 13 09:27:23 2019
+
+168042152842234,,cycles,18232269357206,26.97,,
+868243397407,,dTLB-loads,20306417118259,30.04,,
+498734253799,,dTLB-load-misses,17547948649977,25.96,57.44,of all dTLB cache hits
+90865125298,,dTLB-stores,14387019953190,21.28,,
+45831532,,dTLB-store-misses,15633641299322,23.13,,
+23511375622643,,dtlb_load_misses.walk_duration,17209974104410,25.46,,
+5418770719,,dtlb_store_misses.walk_duration,22634759209334,33.49,,
+488843339521,,dtlb_load_misses.walk_completed,24264630036479,35.90,,
+45000828,,dtlb_store_misses.walk_completed,24639170753611,36.45,,
+0,,EPT.WALK_CYCLES,24356614184301,36.04,,
+@</exp>
+Execution Time (minutes): 10 minutes and 27 seconds.
+Execution Time (seconds): 627
+
+
+
+numactl: warning. Strict flag for process ignored.
+signalling readyness to /tmp/alloctest-bench.ready
+signalling done to /tmp/alloctest-bench.done
+BTree Elements: 1572864000
+Btree Fanout: 16
+Allocator: 164813 MB
+got 0 matches in 627 seconds

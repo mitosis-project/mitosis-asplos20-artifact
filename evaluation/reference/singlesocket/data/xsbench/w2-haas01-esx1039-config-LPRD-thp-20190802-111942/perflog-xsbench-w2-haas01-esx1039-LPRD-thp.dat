@@ -1,0 +1,24 @@
+[description]
+Microbenchmark Runlog
+[workload]
+xsbench
+[name]
+xsbench
+[date]
+20190802-111942
+[hostname]
+w2-haas01-esx1039
+[kernel]
+4.17.0lptr+
+[autonuma]
+0
+[openmp]
+
+[smt]
+on
+[columns]
+run,data,ptables,thp,pti,di,mi
+
+@<exp>
+@ /home/ashish/mitosis-tools/bin/numactl -m 2 -c 0 --strict -- /home/ashish/mitosis-tools/bin/xsbench -t 16 -g 180000 -p 15000000
+0,2,0,,,,0

@@ -1,0 +1,47 @@
+[description]
+Microbenchmark Runlog
+[workload]
+pagerank
+[name]
+pagerank
+[date]
+20190805-232735
+[hostname]
+w2-haas01-esx1039
+[kernel]
+4.17.0lptr+
+[autonuma]
+0
+[openmp]
+
+[smt]
+on
+[columns]
+run,data,ptables,thp,pti,di,mi
+
+@<exp>
+@ /home/ashish/mitosis-tools/bin/numactl -m 2 -c 2 --strict -- /home/ashish/mitosis-tools/bin/pagerank -g 28 -n 1 -i 1
+2,2,0,,,,0
+# started on Mon Aug  5 23:30:17 2019
+
+11290378830974,,cycles,2065888915938,45.42,,
+272044337626,,dTLB-loads,1668418422376,36.68,,
+14092685760,,dTLB-load-misses,1601731865540,35.22,5.18,of all dTLB cache hits
+106659459238,,dTLB-stores,1273787264994,28.01,,
+9402860320,,dTLB-store-misses,1392050505067,30.61,,
+179975341932,,dtlb_load_misses.walk_duration,1126530947229,24.77,,
+420998373503,,dtlb_store_misses.walk_duration,1559527145013,34.29,,
+0,,EPT.WALK_CYCLES,2043755922824,44.93,,
+@</exp>
+Execution Time (minutes): 2 minutes and 45 seconds.
+Execution Time (seconds): 165
+
+
+
+numactl: warning. Strict flag for process ignored.
+Generate Time:       162.27766
+Build Time:          128.22800
+Graph has 268435453 nodes and 4236159837 undirected edges for degree: 15
+  0    1.095643
+Trial Time:          10.97442
+Average Time:        10.97442
