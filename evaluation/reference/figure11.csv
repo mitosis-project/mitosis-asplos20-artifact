@@ -1,0 +1,22 @@
+Workload	Config	Runtime Cycles	Walk Cycles	Non-Walk Cycles
+GUPS	LP-LD	0	0	0
+GUPS	RPI-LD	0	0	0
+GUPS	RPI-LD+M	0	0	0
+GUPS	TLP-LD	0	0	0
+GUPS	TRPI-LD	0	0	0
+GUPS	TRPI-LD+M	0	0	0
+			
+Redis	LP-LD	0	0	0
+Redis	RPI-LD	0	0	0
+Redis	RPI-LD+M	0	0	0
+Redis	TLP-LD	0	0	0
+Redis	TRPI-LD	0	0	0
+Redis	TRPI-LD+M	0	0	0
+			
+XSBench	LP-LD	0	0	0
+XSBench	RPI-LD	0	0	0
+XSBench	RPI-LD+M	0	0	0
+XSBench	TLP-LD	0	0	0
+XSBench	TRPI-LD	0	0	0
+XSBench	TRPI-LD+M	0	0	0
+		
