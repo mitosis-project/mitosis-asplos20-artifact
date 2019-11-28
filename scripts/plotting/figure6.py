@@ -95,24 +95,18 @@ for i in data:
 
     values = [data[i][w] for w in workloads]
 
-    pprint(values)
-    pprint(ind)
-
     walkcycles = [ wc for (_, _ , _, wc) in values]
-
     totalcycles = [ tc-wc for (_, _, tc, wc) in values]
     
     r = ax.bar(ind+n*width, walkcycles, width * 0.75, color=colorsmap(0), hatch=hs[0], edgecolor='k')
     r = ax.bar(ind+n*width, totalcycles, width * 0.75, color=colorsmap(1), edgecolor='k', bottom=walkcycles)
 
     for j in ind :
-        ax.text(j + (n - 0.5)*width, 0, datalabels[n] + "   ", fontsize=6, rotation=90)
+        ax.text(j + (n - 0.5)*width, 0, datalabels[n] + "    ", fontsize=6, rotation=90)
 
     n+=1
 
 
-#fig.suptitle("Appel + Li microbenchmark results")
-#ax.set_xlabel('Strategy')
 ax.set_ylabel('Normalized Runtime')
 #ax.set_yticks([0, 0.25, 0.5, 0.75, 1.0])
 #ax.set_yticklabels(["0%", "25%", "50%", "75%", "100%"])

@@ -2,194 +2,115 @@
 import matplotlib
 matplotlib.use('Agg')
 
+from pprint import pprint
+import csv
 import numpy
 import matplotlib.pyplot as plt
 from matplotlib.backends.backend_pdf import PdfPages
 from matplotlib import cm
 
-import matplotlib
+CSV_FILE="figure10.csv"
+COLOR_MAP='PRGn'
 
+# the data labels we are interested in...
+baseline = "LP-LD"
+datalabels = [ "LP-LD" ,"RPI-LD", "RPI-LD+M" ]
+workloads = ["GUPS", "BTree", "HashJoin", "Redis", "XSBench", "PageRank", "LibLinear", "Canneal"]
 
-
+#
+# Matplotlib Setup
+#
 
 matplotlib.rcParams['figure.figsize'] = 8.0, 2.5
 plt.rc('legend',**{'fontsize':13, 'frameon': 'false'})
 
-def configure_plot(ax):
-    ax.spines['top'].set_visible(False)
-    ax.spines['right'].set_visible(False)
-    ax.get_xaxis().tick_bottom()
-    ax.get_yaxis().tick_left()
-
-
-datalabels = [ "LP-LD" ,"RPI-LD", "RPI-LD+M"]
-
-data = [
-    {
-        'label': 'GUPS', 
-        'data': {
-            "LP-LD" :  (2000, 1343),
-            "RPI-LD" :  (2000, 1343),
-            "RPI-LD+M" :  (2000, 1343)
-        }
-    },
-    {
-        'label': 'BTree', 
-        'data': {
-            "LP-LD" :  (2000, 1343),
-            "RPI-LD" :  (2000, 1343),
-            "RPI-LD+M" :  (2000, 1343)
-        }
-    },
-    {
-        'label': 'HashJoin', 
-        'data': {
-            "LP-LD" :  (2000, 1343),
-            "RPI-LD" :  (2000, 1343),
-            "RPI-LD+M" :  (2000, 1343)
-        }
-    },
-    {
-        'label': 'Redis', 
-        'data': {
-            "LP-LD" :  (2000, 1343),
-            "RPI-LD" :  (2000, 1343),
-            "RPI-LD+M" :  (2000, 1343)
-        }
-    },
-    {
-        'label': 'XSBench', 
-        'data': {
-            "LP-LD" :  (2000, 1343),
-            "RPI-LD" :  (2000, 1343),
-            "RPI-LD+M" :  (2000, 1343)
-        }
-    },
-    {
-        'label': 'PageRank', 
-        'data': {
-            "LP-LD" :  (2000, 1343),
-            "RPI-LD" :  (2000, 1343),
-            "RPI-LD+M" :  (2000, 1343)
-        }
-    },
-    {
-        'label': 'LIbLinear', 
-        'data': {
-            "LP-LD" :  (2000, 1343),
-            "RPI-LD" :  (2000, 1343),
-            "RPI-LD+M" :  (2000, 1343)
-        }
-    },
-    {
-        'label': 'Canneal', 
-        'data': {
-            "LP-LD" :  (2000, 1343),
-            "RPI-LD" :  (2000, 1343),
-            "RPI-LD+M" :  (2000, 1343)
-        }
-    },
-]    
-
-labels = [  ]
-
-n = 0
-
-data_transformed = dict()
-
+###############################################################################
+# load the data
+###############################################################################
+data = dict()
 for d in datalabels :
-    data_transformed[d] = []
-data_transformed["_"] = [(0,0) for x in data[0]['data']]
+    data[d] = dict()
+
+labels = []
+legendnames = []
+with open(CSV_FILE, 'r') as datafile :
+    csvreader = csv.reader(datafile, delimiter='\t', quotechar='|')
+    first = True
+    for row in csvreader :
+        if first :
+            first = False
+            continue
+
+        if len(row) == 0 or row[0] == "" :
+            continue
+        
+        workload = row[0]
+        config = row[1]
+        if config in datalabels:
+            data[config][workload] = (float(row[2]), float(row[3]), 0.0, 0.0)
+
+ndataseries = len(datalabels)
+colorsmap = cm.get_cmap(COLOR_MAP, ndataseries)
+hs = [ '/////', '']
+
+for c in datalabels :
+    for w in workloads :
+        (tc, wc, ntc, nwc) = data[c][w]
+        (n, _, _, _) = data[baseline][w]
+        data[c][w] = (tc, wc, tc/(n+1), (wc / (tc + 1)) * (tc/(n+1))) 
 
 
-for d in data :
-    labels.append("\n\n\n" + d['label'])
-    for dp in d['data'] :
-        data_transformed[dp].append(d['data'][dp])
-    n = n + 1
+for c in datalabels :
+    for w in workloads :
+        (tc, wc, ntc, nwc) = data[c][w]
+        (n, _, _, _) = data[baseline][w]
+        data[c][w] = (tc, wc, tc/(n+1), (wc / (tc + 1)) * (tc/(n+1))) 
 
-ndataseries = 3
-colorsmap = cm.get_cmap('gist_gray', 3)
-colors = [colorsmap(1), colorsmap(1), colorsmap(2)]
-hs = [ '---', '']
 
-#
-# Barchart
-# 
 
-N = len(labels)
+N = len(workloads)
 ind = numpy.arange(N)
-width = 1./(ndataseries + 4)
+width = 1./(ndataseries + 1)
 
 fig, ax = plt.subplots()
 
 
+
 legends = []
 n = 0
-for i in datalabels:
-    walkcycles = [ wc for (_, wc) in data_transformed[i]]
-    totalcycles = [ tc-wc for (tc, wc) in data_transformed[i]]
-    
-    r = ax.bar(ind+(n+0.5)*1.5*width, walkcycles, width, color=colors[n % 3], hatch=hs[0], edgecolor='k')
-    r = ax.bar(ind+(n+0.5)*1.5*width, totalcycles, width, color=colors[n % 3], edgecolor='k', bottom=walkcycles)
 
+
+for i in data:
+    values = [data[i][w] for w in workloads]
+
+    walkcycles = [ wc for (_, _ , _, wc) in values]
+    totalcycles = [ tc-wc for (_, _, tc, wc) in values]
+    
+    if "M" in i :
+        r = ax.bar(ind+n*width, walkcycles, width * 0.75, color=colorsmap(2), hatch=hs[0], edgecolor='k')
+        r = ax.bar(ind+n*width, totalcycles, width * 0.75, color=colorsmap(3), edgecolor='k', bottom=walkcycles)            
+    else :
+        r = ax.bar(ind+n*width, walkcycles, width * 0.75, color=colorsmap(0), hatch=hs[0], edgecolor='k')
+        r = ax.bar(ind+n*width, totalcycles, width * 0.75, color=colorsmap(1), edgecolor='k', bottom=walkcycles)    
+
+    
     for j in ind :
-        ax.text(j + (n + 0.2)*1.5*width, -100, datalabels[n], fontsize=6, rotation=90)
+        ax.text(j + (n - 0.25)*width, 0, datalabels[n] + "    ", fontsize=6, rotation=90)
 
     n+=1
 
 
-#fig.suptitle("Appel + Li microbenchmark results")
-#ax.set_xlabel('Strategy')
-ax.set_ylabel('Runtime')
+ax.set_ylabel('Normalized Runtime')
 #ax.set_yticks([0, 0.25, 0.5, 0.75, 1.0])
 #ax.set_yticklabels(["0%", "25%", "50%", "75%", "100%"])
-ax.set_xticks(ind + (n+2)/2.0*width)
+ax.set_xticks(ind + (len(datalabels) - 1) / 2.0 * width)
 ax.tick_params(axis=u'both', which=u'both',length=0)
-ax.set_xticklabels(labels) #, rotation=45)
-configure_plot(ax)
-
+ax.set_xticklabels([ "\n\n" + w  for w in workloads]) #, rotation=45)
+ax.spines['top'].set_visible(False)
+ax.spines['right'].set_visible(False)
+ax.get_xaxis().tick_bottom()
+ax.get_yaxis().tick_left()
 
 
 plt.savefig('figure10a.pdf', bbox_inches='tight')
 plt.savefig('figure10a.png', bbox_inches='tight')
-
-#    fig, ax = plt.subplots()
-#    rects1 = ax.bar(ind, bars_tux, width, color='r', yerr=err_tux)
-#    rects2 = ax.bar(ind+1*width, bars_bf, width, color='y', yerr=err_bf)
-#    ax.set_xlabel('Heap size')
-#    ax.set_ylabel('Execution time [s]')
-#    ax.set_xticks(ind+1*width)
-#    ax.set_xticklabels( heaps )
-#    ax.legend( (rects1[0], rects2[0]), taglines, loc="upper left" )
-#    pdf.savefig()
-#
-#    fig, ax = plt.subplots()
-#    rects1 = ax.bar(ind, heap_tux, width, color='r')
-#    rects2 = ax.bar(ind+1*width, heap_bf, width, color='y')
-#    ax.set_xlabel('Config')
-#    ax.set_ylabel('Heap size [bytes]')
-#    ax.set_xticks(ind+1*width)
-#    ax.set_xticklabels( bf[1] )
-#    ax.legend( (rects1[0], rects2[0]), taglines, loc="upper left" )
-#    pdf.savefig()
-#
-#    fig, ax = plt.subplots()
-#    rects1 = ax.bar(ind, coll_tux, width, color='r')
-#    rects2 = ax.bar(ind+1*width, coll_bf, width, color='y')
-#    ax.set_xlabel('Config')
-#    ax.set_ylabel('# Collections')
-#    ax.set_xticks(ind+1*width)
-#    ax.set_xticklabels( bf[1] )
-#    ax.legend( (rects1[0], rects2[0]), taglines, loc="upper right" )
-#    pdf.savefig()
-#
-#    fig, ax = plt.subplots()
-#    rects1 = ax.bar(ind, peak_tux, width, color='r')
-#    rects2 = ax.bar(ind+1*width, peak_bf, width, color='y')
-#    ax.set_xlabel('Config')
-#    ax.set_ylabel('Heap Peak [bytes]')
-#    ax.set_xticks(ind+1*width)
-#    ax.set_xticklabels( bf[1] )
-#    ax.legend( (rects1[0], rects2[0]), taglines, loc="upper left" )
-#    pdf.savefig()
