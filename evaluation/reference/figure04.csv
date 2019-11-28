@@ -1,0 +1,7 @@
+Workloads	Socket 0	Socket 1	Socket 2	Socket 3
+Canneal	86%	68%	71%	75%
+Memcached	75%	75%	75%	75%
+XSBench	84%	92%	50%	73%
+Graph500	92%	43%	82%	83%
+HashJoin	53%	99%	50%	98%
+BTree	18%	72%	100%	100%

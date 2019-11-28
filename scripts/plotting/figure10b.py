@@ -107,8 +107,6 @@ for d in data :
         data_transformed[dp].append(d['data'][dp])
     n = n + 1
 
-print(data_transformed)
-
 ndataseries = 3
 colorsmap = cm.get_cmap('gist_gray', 3)
 colors = [colorsmap(1), colorsmap(1), colorsmap(2)]
@@ -153,6 +151,7 @@ configure_plot(ax)
 
 
 plt.savefig('figure10b.pdf', bbox_inches='tight')
+plt.savefig('figure10b.png', bbox_inches='tight')
 
 #    fig, ax = plt.subplots()
 #    rects1 = ax.bar(ind, bars_tux, width, color='r', yerr=err_tux)
