@@ -113,6 +113,6 @@ ax.get_yaxis().tick_left()
 
 
 
-plt.savefig('figure09b.pdf', bbox_inches='tight')
-plt.savefig('figure09b.png', bbox_inches='tight')
+plt.savefig('figure09a.pdf', bbox_inches='tight')
+plt.savefig('figure09a.png', bbox_inches='tight')
 
