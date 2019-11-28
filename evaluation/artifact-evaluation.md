@@ -85,7 +85,7 @@ in walking the page-tables. All configurations are shown in Table 2.
 `\newpage`{=latex}
 
 
-Figure 9 - Multi-Socket Scenario
+Figure 9a - Multi-Socket Scenario 4kB Pages
 -----------------------------------------
 
 **Script:**  `./run_f9.sh`
@@ -96,17 +96,37 @@ spent in walking the page-tables.
 
 **Reference**
 
-![lFigure 9 - Reference](reference/figure09.png "Figure 9 - Reference"){ width=100% }\
+![lFigure 9 - Reference](reference/figure09a.png "Figure 9a - Reference"){ width=100% }\
 
 **Reproduction**
 
-![Figure 9 - Reproduction](measured/figure09.png "Figure 9 - Reproduction"){ width=100% }\
+![Figure 9 - Reproduction](measured/figure09a.png "Figure 9a - Reproduction"){ width=100% }\
 
 `\newpage`{=latex}
 
 
-Figure 10 - Workload Migration Scenario
----------------------------------------
+Figure 9b - Multi-Socket Scenario 2MB Pages
+-------------------------------------------
+
+**Script:**  `./run_f9.sh`
+
+**Description:** Normalized performance with Mitosis for multi-socket workloads 
+with 4KB and 2MB page size. The lower hashed part of each bar is execution time 
+spent in walking the page-tables.
+
+**Reference**
+
+![lFigure 9 - Reference](reference/figure09b.png "Figure 9a - Reference"){ width=100% }\
+
+**Reproduction**
+
+![Figure 9 - Reproduction](measured/figure09b.png "Figure 9a - Reproduction"){ width=100% }\
+
+`\newpage`{=latex}
+
+
+Figure 10a - Workload Migration Scenario 4kB Pages
+--------------------------------------------------
 
 **Script:** `./run_f10.sh`
 
@@ -116,11 +136,30 @@ bar is execution time spent in walking the page-tables.
 
 **Reference**
 
-![Figure 10 - Reference](reference/figure10.png "Figure 10 - Reference"){ width=100% }\\
+![Figure 10 - Reference](reference/figure10a.png "Figure 10 - Reference"){ width=100% }\\
 
 **Reproduction**
 
-![Figure 10 - Reproduction](measured/figure10.png "Figure 10 - Reproduction"){ width=100% }\
+![Figure 10 - Reproduction](measured/figure10a.png "Figure 10 - Reproduction"){ width=100% }\
+
+`\newpage`{=latex}
+
+Figure 10b - Workload Migration Scenario 2MB Pages
+--------------------------------------------------
+
+**Script:** `./run_f10.sh`
+
+**Description:** Normalized performance with Mitosis for workloads in workload 
+migration scenario with 4KB and 2MB page size. The lower hashed part of each 
+bar is execution time spent in walking the page-tables.
+
+**Reference**
+
+![Figure 10 - Reference](reference/figure10b.png "Figure 10 - Reference"){ width=100% }\\
+
+**Reproduction**
+
+![Figure 10 - Reproduction](measured/figure10b.png "Figure 10 - Reproduction"){ width=100% }\
 
 `\newpage`{=latex}
 

@@ -26,6 +26,9 @@ function generate_plots {
     echo "   > Multi Socket Benchmarks"
     python3 ./process_logs.py
     popd > /dev/null
+
+    echo " > Generating Figure" 
+
     popd > /dev/null
 }
 
