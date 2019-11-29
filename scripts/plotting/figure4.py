@@ -87,8 +87,11 @@ ax.set_xticklabels(labels) #, rotation=45)
 ax.set_xlabel("workload")
 
 # disable border around plot
+ax.set_axisbelow(True)
+ax.grid(which='major', axis='y', zorder=999999.0)
 ax.spines['top'].set_visible(False)
 ax.spines['right'].set_visible(False)
+ax.spines['left'].set_visible(False)
 
 
 lgnd_boxes, lgnd_labels = zip(*legends)

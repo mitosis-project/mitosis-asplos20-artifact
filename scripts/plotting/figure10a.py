@@ -14,8 +14,21 @@ COLOR_MAP='PRGn'
 
 # the data labels we are interested in...
 baseline = "LP-LD"
-datalabels = [ "LP-LD" ,"RPI-LD", "RPI-LD+M" ]
+configs = [ "LP-LD" ,"RPI-LD", "RPI-LD+M" ]
 workloads = ["GUPS", "BTree", "HashJoin", "Redis", "XSBench", "PageRank", "LibLinear", "Canneal"]
+
+
+# this is the number of bars per workload
+ndataseries = len(configs)
+
+# get the color map per workload
+colorsmap = cm.get_cmap(COLOR_MAP, ndataseries)
+
+# the hatches for the highlights
+hs = [ '/////', '']
+
+# the width of the bar (should be < 1)
+barwidth = 0.50
 
 #
 # Matplotlib Setup
@@ -24,15 +37,16 @@ workloads = ["GUPS", "BTree", "HashJoin", "Redis", "XSBench", "PageRank", "LibLi
 matplotlib.rcParams['figure.figsize'] = 8.0, 2.5
 plt.rc('legend',**{'fontsize':13, 'frameon': 'false'})
 
+
+
 ###############################################################################
 # load the data
 ###############################################################################
-data = dict()
-for d in datalabels :
-    data[d] = dict()
 
-labels = []
-legendnames = []
+data = dict()
+for w in workloads :
+    data[w] = dict()
+
 with open(CSV_FILE, 'r') as datafile :
     csvreader = csv.reader(datafile, delimiter='\t', quotechar='|')
     first = True
@@ -46,71 +60,74 @@ with open(CSV_FILE, 'r') as datafile :
         
         workload = row[0]
         config = row[1]
-        if config in datalabels:
-            data[config][workload] = (float(row[2]), float(row[3]), 0.0, 0.0)
-
-ndataseries = len(datalabels)
-colorsmap = cm.get_cmap(COLOR_MAP, ndataseries)
-hs = [ '/////', '']
-
-for c in datalabels :
-    for w in workloads :
-        (tc, wc, ntc, nwc) = data[c][w]
-        (n, _, _, _) = data[baseline][w]
-        data[c][w] = (tc, wc, tc/(n+1), (wc / (tc + 1)) * (tc/(n+1))) 
+        if workload in workloads and config in configs :
+            data[workload][config] = (float(row[2]), float(row[3]))
 
 
-for c in datalabels :
-    for w in workloads :
-        (tc, wc, ntc, nwc) = data[c][w]
-        (n, _, _, _) = data[baseline][w]
-        data[c][w] = (tc, wc, tc/(n+1), (wc / (tc + 1)) * (tc/(n+1))) 
+###############################################################################
+# Plot the Graph
+###############################################################################
 
-
-
-N = len(workloads)
-ind = numpy.arange(N)
-width = 1./(ndataseries + 1)
+totalbars = (len(workloads) * len(configs)) + len(workloads);
 
 fig, ax = plt.subplots()
 
+datalabels = []
 
+ymin = 0
+ymax = 1
 
-legends = []
-n = 0
-
-
-for i in data:
-    values = [data[i][w] for w in workloads]
-
-    walkcycles = [ wc for (_, _ , _, wc) in values]
-    totalcycles = [ tc-wc for (_, _, tc, wc) in values]
+idx = 0
+for w in workloads :
+    idx = idx + 1
+    datalabels.append("")
     
-    if "M" in i :
-        r = ax.bar(ind+n*width, walkcycles, width * 0.75, color=colorsmap(2), hatch=hs[0], edgecolor='k')
-        r = ax.bar(ind+n*width, totalcycles, width * 0.75, color=colorsmap(3), edgecolor='k', bottom=walkcycles)            
-    else :
-        r = ax.bar(ind+n*width, walkcycles, width * 0.75, color=colorsmap(0), hatch=hs[0], edgecolor='k')
-        r = ax.bar(ind+n*width, totalcycles, width * 0.75, color=colorsmap(1), edgecolor='k', bottom=walkcycles)    
+    midpoint = float(idx + (idx + len(configs) - 1)) / 2.0
 
-    
-    for j in ind :
-        ax.text(j + (n - 0.25)*width, 0, datalabels[n] + "    ", fontsize=6, rotation=90)
+    ax.text(midpoint / totalbars, -0.45, w, 
+            horizontalalignment='center', fontsize=10,
+            transform=ax.transAxes)
 
-    n+=1
+    for c in configs :
+        (totalcycles, walkcycles) = data[w][c]
+        (base, _) = data[w][baseline]
+        wcn = (walkcycles / (totalcycles + 1)) * (totalcycles/(base+1))
+        tcn = totalcycles/(base+1)
+        ymax = max(ymax, tcn)
+        
+        colors = (colorsmap(0), colorsmap(1))
+        if "M" in c :
+            colors = (colorsmap(2), colorsmap(3))
 
+        r = ax.bar(idx, wcn, barwidth, color=colors[0], hatch=hs[0], edgecolor='k')
+        r = ax.bar(idx, tcn-wcn, barwidth, color=colors[1], edgecolor='k', bottom=wcn)
+
+        datalabels.append(c)
+        idx = idx + 1
+
+# add the last data label
+datalabels.append("")
 
 ax.set_ylabel('Normalized Runtime')
+ax.set_ylim([ymin, ymax * 1.10])
+
 #ax.set_yticks([0, 0.25, 0.5, 0.75, 1.0])
 #ax.set_yticklabels(["0%", "25%", "50%", "75%", "100%"])
-ax.set_xticks(ind + (len(datalabels) - 1) / 2.0 * width)
+ax.set_xlim([0, idx])
+ax.set_xticks(numpy.arange(idx)+0.05)
+ax.set_xticklabels(datalabels, rotation=90, fontsize=9,
+    horizontalalignment='center', linespacing=0)
+
+
 ax.tick_params(axis=u'both', which=u'both',length=0)
-ax.set_xticklabels([ "\n\n" + w  for w in workloads]) #, rotation=45)
+
+ax.set_axisbelow(True)
+ax.grid(which='major', axis='y', zorder=999999.0)
 ax.spines['top'].set_visible(False)
 ax.spines['right'].set_visible(False)
+ax.spines['left'].set_visible(False)
 ax.get_xaxis().tick_bottom()
 ax.get_yaxis().tick_left()
-
 
 plt.savefig('figure10a.pdf', bbox_inches='tight')
 plt.savefig('figure10a.png', bbox_inches='tight')
