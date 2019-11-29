@@ -12,7 +12,9 @@
 cd /source
 
 if [ "$1" == "" ]; then
+    echo "Dropping into /bin/bash"
     exec "/bin/bash" 
 else
-    exec "$@" 
+    echo "Executing command: /bin/bash -c \"$@\"" 
+    exec /bin/bash -c "$@"
 fi

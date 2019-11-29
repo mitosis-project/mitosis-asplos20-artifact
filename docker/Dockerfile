@@ -18,7 +18,7 @@ RUN apt-get update && apt-get install -y \
     libnuma-dev python3 python3 python3-pip \
     git wget pandoc fakeroot ccache \
     kernel-package python3-matplotlib python3-numpy \
-    libevent-dev
+    libevent-dev libreadline-dev
 
 COPY entrypoint.sh /entrypoint.sh
 
