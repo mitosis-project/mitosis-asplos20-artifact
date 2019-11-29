@@ -57,7 +57,8 @@ sudo apt-get install build-essential libncurses-dev \
                      libnuma-dev python3 python3 python3-pip \
                      python3-matplotlib python3-numpy \
                      git wget kernel-package fakeroot ccache \
-                     libncurses5-dev wget pandoc libevent-dev
+                     libncurses5-dev wget pandoc libevent-dev \
+                     libreadline-dev
 ```                       
 
 In addition the following python libraries, installed with pip
