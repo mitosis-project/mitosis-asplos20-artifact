@@ -42,10 +42,15 @@ USER:=$(shell id -u)
 docker-image : docker/Dockerfile
 	docker build -t $(IMAGE) docker
 	
-docker-run:
+docker-shell: docker-image 
 	docker run -u $(USER) -i -t \
-    --mount type=bind,source=$(CURDIR),target=/source \
-    $(IMAGE)
+    	--mount type=bind,source=$(CURDIR),target=/source \
+    	$(IMAGE)
+
+docker-compile: docker-image 
+	docker run -u $(USER) -i -t \
+		--mount type=bind,source=$(CURDIR),target=/source \
+    	$(IMAGE) "make -j $(NPROCS)"	
 
 
 ###############################################################################

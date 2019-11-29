@@ -31,6 +31,9 @@ Directory Structure
  * `/precompiled` contains the downloaded binaries
  * `/build` contains the locally compiled binaries
  * `/sources` contains the source code of the binaries
+ * `/bin` points to the used binaries for the evaluation (you can use 
+   `toggle_build.sh` to switch between precompiled and locally compined 
+   binaries)
 
 
 Hardware Dependencies
@@ -67,6 +70,10 @@ In addition the following python libraries, installed with pip
 pip3 install zenodo-get
 
 ```
+
+**Docker** There is a docker image which you can use to compile. You can do
+`make docker-shell` to obtain a shell in the docker container, or just to 
+compile everything type `make docker-compile`.
 
 
 Obtaining Pre-Compiled Binaries
