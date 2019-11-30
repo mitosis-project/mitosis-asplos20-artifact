@@ -13,7 +13,7 @@ echo "************************************************************************"
 echo "ASPLOS'20 - Artifact Evaluation - Mitosis - Figure 10B"
 echo "************************************************************************"
 
-#ROOT=$(dirname `readlink -f "$0"`)
+ROOT=$(dirname `readlink -f "$0"`)
 #source $ROOT/site_config.sh
 
 THP="always"
@@ -33,13 +33,15 @@ configure_thp()
 configure_thp
 
 # List of all benchmarks to run
-BENCHMARKS="pagerank"
+BENCHMARKS="gups btree hashjoin redis xsbench pagerank liblinear canneal"
 # List of all configs to run
-CONFIGS="LPLD LPRD LPRDIM"
+CONFIGS="TLPLD TRPILD TRPILDM"
 
 for bench in $BENCHMARKS; do
 	for config in $CONFIGS; do
-		echo "******************$bench: $config***********************"
-		bash run_f6f10_one.sh $bench $config
+		echo "******************$bench : $config***********************"
+		bash $ROOT/run_f6f10_one.sh $bench $config
 	done
 done
+# --- process the output logs
+$ROOT/process_logs_f6f10.py
