@@ -17,8 +17,11 @@ figures = ["figure6", "figure10"]
 configs = ["LPLD", "LPRD", "LPRDI", "RPLD", "RPILD", "RPRD", "RPIRDI", "RPLDM", "RPILDM",
             "TLPLD", "TLPRD", "TLPRDI", "TRPLD", "TRPILD", "TRPRD", "TRPIRDI", "TRPLDM", "TRPILDM"]
 
+pretty_configs = ["LP-LD", "LP-RD", "LP-RDI", "RP-LD", "RPI-LD", "RP-RD", "RPI-RDI", "RP-LDM", "RPI-LD+M",
+            "TLP-LD", "TLP-RD", "TLP-RDI", "TRP-LD", "TRPI-LD", "TRP-RD", "TRPI-RDI", "TRP-LD+M", "TRPI-LD+M"]
 #---all workloads
 workloads = ["gups", "btree", "hashjoin", "redis", "xsbench", "pagerank", "liblinear", "canneal"]
+pretty_workloads = ["GUPS", "BTree", "HashJoin", "Redis", "XSBench", "PageRank", "LibLinear", "Canneal"]
 #configs = ["LPLD", "LPRD", "RPLD", "LPRDI", "RPILD", "RPRD", "RPIRDI"]
 
 def get_time_from_log(line):
@@ -89,7 +92,18 @@ def traverse_benchmark(path):
             print_workload_config(log)
             process_perf_log(log)
 
-def print_average(output, bench, config, printName, fd):
+def pretty(name):
+    if name in configs:
+        index = configs.index(name)
+        return pretty_configs[index]
+    if name in workloads:
+        index = workloads.index(name)
+        return pretty_workloads[index]
+
+    print ("ERROR converting \"%s\" to pretty" %name)
+    sys.exit()
+
+def dump_workload_config_average(output, bench, config, fd, absolute):
     cycles = 0
     pwc = 0
     count = 0
@@ -101,9 +115,18 @@ def print_average(output, bench, config, printName, fd):
             pwc += result["pwc"]
             count += 1
 
+
     if count == 0:
         #print("Data unavailable for %s %s" %(bench, config))
-        return False
+        return
+
+    if absolute:
+            cycles = int(cycles / count)
+            pwc = int (pwc / count)
+            line = "%s\t%s\t%d\t%d\t%d\n" % (pretty(bench), pretty(config), cycles, pwc, cycles-pwc)
+            fd.write(line)
+            return
+
 
     stdev = 0
     if count > 1:
@@ -125,7 +148,7 @@ def print_average(output, bench, config, printName, fd):
     if count == 0:
         print("Baseline not found for %s %s" %(curr_bench, curr_config))
         print("Unable to normalize.")
-        return False
+        return
 
    # --- take the average
     baseline = baseline / count
@@ -136,36 +159,35 @@ def print_average(output, bench, config, printName, fd):
     rest_cycles = norm_perf - norm_cycles #(cycles-pwc)/float(baseline)
     # --- normalize std dev
     stdev = stdev / float(baseline)
-    response = False 
-    if printName == True:
-        line = "%s\t%s\t%f\t%f\t%f\t%f" % (bench, config, norm_cycles, rest_cycles, stdev, norm_perf)
-        response = True
-    else:
-        line = "\t%s\t%f\t%f\t%f\t%f" % (config, norm_cycles, rest_cycles, stdev, norm_perf)
-    
+    #line = "%s\t%s\t%f\t%f\t%f\t%f" % (bench, config, norm_cycles, rest_cycles, stdev, norm_perf)
+    line = "%s\t%s\t%f\t%f\t%f" % (pretty(bench), pretty(config), norm_cycles, rest_cycles, norm_perf)
     fd.write(line + "\n")
-    return response
 
-def process_average(fd, output):
+def process_all_runs(fd, output, absolute):
     global benchmarks, configs, curr_bench
     benchmarks = list(dict.fromkeys(benchmarks))
 
-    fd.write("\t\tPage-walk\tExecution\tStd. Dev.\tNorm. Perf.\n")
+    if absolute:
+        fd.write("Workload\tConfiguration\tRuntime Cycles\tWalk Cycles\tNon-Walk Cycles\n")
+    else:
+        #fd.write("Workload\tConfiguration\tWalkCycles\tNon-WalkCycles\tStd. Dev.\tNorm. Perf.\n")
+        fd.write("Workload\tConfiguration\tWalk Cycles\tNon-Walk Cycles\t Norm. Perf.\n")
+    #fd.write("Workload\tConfiguration\tRuntime Cycles\tWalk Cycles\tNon-Walk Cycles\n")
     for bench in workloads:
         curr_bench = bench
         # --- print name only for the first config
-        printName = True
         for config in configs:
-            printed = print_average(output, bench, config, printName, fd)
-            if printed == True:
-                printName = False
+            printed = dump_workload_config_average(output, bench, config, fd, absolute)
 
     fd.close()
 
-def gen_figure6_csv(path):
+def gen_figure6_csv(path, absolute):
     # --- put it under evaluation
     root=os.path.dirname(os.getcwd())
-    fd6_path = os.path.join(root, "evaluation/measured/figure6/figure6.csv")
+    fd6_path = os.path.join(root, "evaluation/measured/figure6/figure6_normalized.csv")
+    if absolute:
+        fd6_path = os.path.join(root, "evaluation/measured/figure6/figure6_absolute.csv")
+
     fd6 = open(fd6_path, "w")
     if fd6 is None:
         print("ERROR creating figure6.csv.")
@@ -176,14 +198,14 @@ def gen_figure6_csv(path):
         print("ERROR unable to open the common csv file")
         sys.exit()
 
-    fig6_configs = ["LPLD", "LPRD", "LPRDI", "RPLD", "RPILD", "RPRD", "RPIRDI"]
+    fig6_configs = ["LP-LD", "LP-RD", "LP-RDI", "RP-LD", "RPI-LD", "RP-RD", "RPI-RDI"]
     # --- copy the first line as it is
     fd6.write(fd.readline())
     line = fd.readline()
     while line:
         columns = line.split()
         valid = False
-        if columns[0] in fig6_configs or columns[1] in fig6_configs:
+        if columns[1] in fig6_configs:
             fd6.write(line)
 
         line = fd.readline()
@@ -192,16 +214,20 @@ def gen_figure6_csv(path):
     fd6.close()
     print("Location: %s" %fd6_path)
 
-def gen_figure10_csv(path, thp):
+def gen_figure10_csv(path, thp, absolute):
     # --- put it under evaluation
     root = os.path.dirname(os.getcwd())
     out_file = os.path.join(root, "evaluation/measured/figure10")
-    fig10_configs = ["LPLD", "RPILD", "RPILDM"]
+    fig10_configs = ["LP-LD", "RPI-LD", "RPI-LD+M"]
+    path_suffix="_normalized"
+    if absolute:
+        path_suffix="_absolute"
+
     if thp == True:
-        out_file = os.path.join(out_file, "figure10b.csv")
-        fig10_configs = ["TLPLD", "TRPILD", "TRPILDM"]
+        out_file = os.path.join(out_file, "figure10b" + path_suffix + ".csv")
+        fig10_configs = ["TLP-LD", "TRPI-LD", "TRPI-LD+M"]
     else:
-        out_file = os.path.join(out_file, "figure10a.csv")
+        out_file = os.path.join(out_file, "figure10a" + path_suffix + ".csv")
 
     fd10_path = os.path.join(os.getcwd(), out_file)
     fd10 = open(fd10_path, "w")
@@ -220,32 +246,33 @@ def gen_figure10_csv(path, thp):
     curr_bench="XXX"
     while line:
         columns = line.split()
-        if columns[0] in workloads:
-            curr_bench = columns[0]
-            isNew = 1
-
-        if columns[0] in fig10_configs or columns[1] in fig10_configs:
-            if isNew == 1 and thp == True:
-                line = curr_bench + line
-                isNew = 0
+        if columns[1] in fig10_configs:
             fd10.write(line)
+        #if columns[0] in workloads:
+        #    curr_bench = columns[0]
+        #    isNew = 1
+
+        #if columns[0] in fig10_configs or columns[1] in fig10_configs:
+        #    if isNew == 1 and thp == True:
+        #        line = curr_bench + line
+        #        isNew = 0
+        #    fd10.write(line)
 
         line = fd.readline()
    
     fd.close() 
     fd10.close()
-    print("Location: %s" %fd10_path)
+    prefix="Normalized"
+    if absolute:
+        prefix="Absolute"
+
+    print("%s: %s" %(prefix, fd10_path))
     
 if __name__=="__main__":
     root = os.path.dirname(os.getcwd())
     out_dir = os.path.join(root, "evaluation/measured")
 
     print("Reading dumps for Figure-6 and Figure-10")
-    tmpsrc = os.path.join(out_dir, "common.csv")
-    fd = open(tmpsrc, "w")
-    if fd is None:
-        print("ERROR creating csv file")
-        sys.exit()
 
     for figure in figures:
         exp_dir = os.path.join(out_dir, figure)
@@ -255,11 +282,31 @@ if __name__=="__main__":
                 traverse_benchmark(path)
             break
 
-    process_average(fd, summary)
+    norm_src = os.path.join(out_dir, "common_normalized.csv")
+    abs_src = os.path.join(out_dir, "common_absolute.csv")
+    fd_norm = open(norm_src, "w")
+    fd_abs = open(abs_src, "w")
+    if fd_norm is None or fd_abs is None:
+        print("ERROR creating csv file")
+        sys.exit()
+
+    # --- process normalized data
+    process_all_runs(fd_norm, summary, False)
+    process_all_runs(fd_abs, summary, True)
     print("Generating Figure-6 csv file")
-    gen_figure6_csv(tmpsrc)
+    # --- process absolute and normalized separately
+    gen_figure6_csv(norm_src, False)
+    gen_figure6_csv(abs_src, True)
     print("Generating Figure-10(a) csv file")
-    gen_figure10_csv(tmpsrc, False)
+    # --- process absolute and normalized separately
+    gen_figure10_csv(norm_src, False, False) # --- Fig-a/Fig-b and absolute/nomalized
+    gen_figure10_csv(abs_src, False, True) # --- Fig-a/Fig-b and absolute/nomalized
     print("Generating Figure10(b) csv file")
-    gen_figure10_csv(tmpsrc, True)
-    fd.close()
+    gen_figure10_csv(norm_src, True, False) # --- Fig-a/Fig-b and absolute/nomalized
+    gen_figure10_csv(abs_src, True, True) # --- Fig-a/Fig-b and absolute/nomalized
+    # --- process absolute and normalized separately
+    fd_norm.close()
+    fd_abs.close()
+    #print("Common csv files:")
+    #print("Normalized: %s" %norm_src)
+    #print("Absolute: %s" %abs_src)
