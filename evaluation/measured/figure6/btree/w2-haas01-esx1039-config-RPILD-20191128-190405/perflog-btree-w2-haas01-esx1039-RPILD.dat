@@ -1,0 +1,24 @@
+/home/ashish/mitosis-asplos20-artifact/bin/numactl -m 1 -c 1 /home/ashish/mitosis-asplos20-artifact/bin/bench_btree_st
+# started on Thu Nov 28 19:06:08 2019
+
+1288318763256,,cycles,81706596139,15.79,,
+10756217703,,dTLB-loads,81710536757,15.79,,
+1819176910,,dTLB-load-misses,81707619605,15.79,16.91,of all dTLB cache hits
+1152762711,,dTLB-stores,54477242214,10.53,,
+383295,,dTLB-store-misses,54477028672,10.53,,
+935055235681,,dtlb_load_misses.walk_duration,54477205318,10.53,,
+32234289,,dtlb_store_misses.walk_duration,81715592464,15.79,,
+1512181984,,page_walker_loads.dtlb_l1,108953927130,21.05,,
+139230399,,page_walker_loads.dtlb_l2,108954088233,21.05,,
+1203864929,,page_walker_loads.dtlb_l3,108953747353,21.05,,
+440091968,,page_walker_loads.dtlb_memory,108953782812,21.05,,
+1511975701,,page_walker_loads.dtlb_l1,108954266263,21.05,,
+139174430,,page_walker_loads.dtlb_l2,108951659796,21.05,,
+1204061153,,page_walker_loads.dtlb_l3,108948022974,21.05,,
+440119732,,page_walker_loads.dtlb_memory,108943957959,21.05,,
+5599425018,,LLC-loads,108939613954,21.05,,
+2870770087,,LLC-load-misses,108938326048,21.05,51.27,of all LL-cache hits
+2756849,,LLC-stores,54469182602,10.53,,
+990821,,LLC-store-misses,54469005360,10.53,,
+Execution Time (seconds): 518
+****success****

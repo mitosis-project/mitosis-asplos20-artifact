@@ -1,0 +1,12 @@
+/home/ashish/mitosis-asplos20-artifact/bin/numactl -m 0 -c 1 /home/ashish/mitosis-asplos20-artifact/bin/bench_gups_st
+# started on Thu Nov 28 12:19:12 2019
+
+2100132772934,,cycles,481991413213,57.14,,
+3647911502,,dTLB-loads,481992721118,57.14,,
+3855835032,,dTLB-load-misses,481983486022,57.14,105.70,of all dTLB cache hits
+3486012438,,dTLB-stores,240994472169,28.57,,
+284951868,,dTLB-store-misses,240992903706,28.57,,
+1998449658093,,dtlb_load_misses.walk_duration,240993491080,28.57,,
+38538564408,,dtlb_store_misses.walk_duration,361489874598,42.86,,
+Execution Time (seconds): 844
+****success****
