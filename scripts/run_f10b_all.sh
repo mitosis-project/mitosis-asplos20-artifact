@@ -16,22 +16,6 @@ echo "************************************************************************"
 ROOT=$(dirname `readlink -f "$0"`)
 #source $ROOT/site_config.sh
 
-THP="always"
-configure_thp()
-{
-        echo $THP | sudo tee /sys/kernel/mm/transparent_hugepage/enabled > /dev/null
-        if [ $? -ne 0 ]; then
-                echo "Error setting THP to $THP"
-                exit
-        fi
-        echo $THP | sudo tee /sys/kernel/mm/transparent_hugepage/defrag > /dev/null
-        if [ $? -ne 0 ]; then
-                echo "Error setting THP to $THP"
-                exit
-        fi
-}
-configure_thp
-
 # List of all benchmarks to run
 BENCHMARKS="gups btree hashjoin redis xsbench pagerank liblinear canneal"
 # List of all configs to run

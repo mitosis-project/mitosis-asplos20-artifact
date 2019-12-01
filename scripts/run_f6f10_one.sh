@@ -63,33 +63,6 @@ validate_benchmark_config()
 		exit
 	fi
 }
-validate_benchmark_config $BENCHMARK $CONFIG
-
-set_system_configs()
-{
-        CURR_CONFIG=$1
-        FIRST_CHAR=${CURR_CONFIG:0:1}
-        thp="never"
-        if [ $FIRST_CHAR == "T" ]; then
-                thp="always"
-        fi
-        echo $thp | sudo tee /sys/kernel/mm/transparent_hugepage/enabled > /dev/null
-        if [ $? -ne 0 ]; then
-                echo  "ERROR setting thp to: $thp"
-                exit
-        fi
-        echo $thp | sudo tee /sys/kernel/mm/transparent_hugepage/defrag > /dev/null
-        if [ $? -ne 0 ]; then
-                echo "ERROR setting thp to: $thp"
-                exit
-        fi
-        echo 0 | sudo tee /proc/sys/kernel/numa_balancing > /dev/null
-        if [ $? -ne 0 ]; then
-                echo "ERROR setting AutoNUMA to: 0"
-                exit
-        fi        
-}
-set_system_configs $CONFIG
 
 prepare_benchmark_name()
 {
@@ -104,14 +77,6 @@ prepare_benchmark_name()
 	BIN+=$BENCHMARK
 	BIN+=$POSTFIX
 }
-prepare_benchmark_name $BENCHMARK
-
-
-#***********************Workload-Parameters***********************
-CPU_NODE=0
-DATA_NODE=0
-PT_NODE=0
-MITOSIS=0
 
 #prepare_basic_config_params()
 #{
@@ -190,11 +155,6 @@ prepare_basic_config_params()
         fi
 }
 
-prepare_basic_config_params $CONFIG
-#echo "PTNODE:   $PT_NODE"
-#echo "DATANODE: $DATA_NODE"
-#echo "CPU_NODE: $CPU_NODE"
-
 prepare_all_pathnames()
 {
 	SCRIPTS=$(readlink -f "`dirname $(readlink -f "$0")`")
@@ -237,7 +197,36 @@ prepare_all_pathnames()
         fi
 	OUTFILE=$RUNDIR/perflog-$BENCHMARK-$(hostname)-$CONFIG.dat
 }
-prepare_all_pathnames
+
+set_system_configs()
+{
+        CURR_CONFIG=$1
+        FIRST_CHAR=${CURR_CONFIG:0:1}
+        thp="never"
+        if [ $FIRST_CHAR == "T" ]; then
+                thp="always"
+        fi
+        echo $thp | sudo tee /sys/kernel/mm/transparent_hugepage/enabled > /dev/null
+        if [ $? -ne 0 ]; then
+                echo  "ERROR setting thp to: $thp"
+                exit
+        fi
+        echo $thp | sudo tee /sys/kernel/mm/transparent_hugepage/defrag > /dev/null
+        if [ $? -ne 0 ]; then
+                echo "ERROR setting thp to: $thp"
+                exit
+        fi
+        echo 0 | sudo tee /proc/sys/kernel/numa_balancing > /dev/null
+        if [ $? -ne 0 ]; then
+                echo "ERROR setting AutoNUMA to: 0"
+                exit
+        fi
+        echo $PT_NODE | sudo tee /proc/sys/kernel/pgtable_replication > /dev/null
+        if [ $? -ne 0 ]; then
+                echo "ERROR setting pgtable allocation to node: $PT_NODE"
+                exit
+        fi
+}
 
 launch_interference()
 {
@@ -298,4 +287,13 @@ launch_benchmark_config()
         echo ""
 	killall bench_stream &>/dev/null
 }
+
+# --- prepare setup
+validate_benchmark_config $BENCHMARK $CONFIG
+prepare_benchmark_name $BENCHMARK
+prepare_basic_config_params $CONFIG
+prepare_all_pathnames
+set_system_configs $CONFIG
+
+# --- finally, launch the job
 launch_benchmark_config
