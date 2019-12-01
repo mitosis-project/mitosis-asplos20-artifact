@@ -9,7 +9,7 @@ import matplotlib.pyplot as plt
 from matplotlib.backends.backend_pdf import PdfPages
 from matplotlib import cm
 
-CSV_FILE="figure10.csv"
+CSV_FILE="figure10/figure10a_absolute.csv"
 COLOR_MAP='PRGn'
 
 # the data labels we are interested in...
@@ -46,10 +46,13 @@ plt.rc('legend',**{'fontsize':13, 'frameon': 'false'})
 data = dict()
 for w in workloads :
     data[w] = dict()
+    for c in configs :
+        data[w][c] = (0,0)
 
 with open(CSV_FILE, 'r') as datafile :
     csvreader = csv.reader(datafile, delimiter='\t', quotechar='|')
     first = True
+
     for row in csvreader :
         if first :
             first = False
@@ -57,7 +60,6 @@ with open(CSV_FILE, 'r') as datafile :
 
         if len(row) == 0 or row[0] == "" :
             continue
-        
         workload = row[0]
         config = row[1]
         if workload in workloads and config in configs :

@@ -10,7 +10,7 @@ from matplotlib.backends.backend_pdf import PdfPages
 from matplotlib import cm
 
 
-CSV_FILE="figure04.csv"
+CSV_FILE="figure4/figure4_normalized.csv"
 COLOR_MAP='PRGn'
 
 

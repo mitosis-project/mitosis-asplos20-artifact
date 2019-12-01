@@ -1,0 +1,57 @@
+Workload	Config	Runtime Cycles	Walk Cycles	Non-Walk Cycles
+GUPS	LP-LD	0	0	0
+GUPS	RPI-LD	0	0	0
+GUPS	RPI-LD+M	0	0	0
+GUPS	TLP-LD	0	0	0
+GUPS	TRPI-LD	0	0	0
+GUPS	TRPI-LD+M	0	0	0
+		0	0	0
+		0	0	0
+BTree	LP-LD	0	0	0
+BTree	RPI-LD	0	0	0
+BTree	RPI-LD+M	0	0	0
+BTree	TLP-LD	0	0	0
+BTree	TRPI-LD	0	0	0
+BTree	TRPI-LD+M	0	0	0
+		0	0	0
+HashJoin	LP-LD	0	0	0
+HashJoin	RPI-LD	0	0	0
+HashJoin	RPI-LD+M	0	0	0
+HashJoin	TLP-LD	0	0	0
+HashJoin	TRPI-LD	0	0	0
+HashJoin	TRPI-LD+M	0	0	0
+		0	0	0
+Redis	LP-LD	0	0	0
+Redis	RPI-LD	0	0	0
+Redis	RPI-LD+M	0	0	0
+Redis	TLP-LD	0	0	0
+Redis	TRPI-LD	0	0	0
+Redis	TRPI-LD+M	0	0	0
+		0	0	0
+XSBench	LP-LD	0	0	0
+XSBench	RPI-LD	0	0	0
+XSBench	RPI-LD+M	0	0	0
+XSBench	TLP-LD	0	0	0
+XSBench	TRPI-LD	0	0	0
+XSBench	TRPI-LD+M	0	0	0
+		0	0	0
+PageRank	LP-LD	0	0	0
+PageRank	RPI-LD	0	0	0
+PageRank	RPI-LD+M	0	0	0
+PageRank	TLP-LD	0	0	0
+PageRank	TRPI-LD	0	0	0
+PageRank	TRPI-LD+M	0	0	0
+		0	0	0
+LibLinear	LP-LD	0	0	0
+LibLinear	RPI-LD	0	0	0
+LibLinear	RPI-LD+M	0	0	0
+LibLinear	TLP-LD	0	0	0
+LibLinear	TRPI-LD	0	0	0
+LibLinear	TRPI-LD+M	0	0	0
+		0	0	0
+Canneal	LP-LD	0	0	0
+Canneal	RPI-LD	0	0	0
+Canneal	RPI-LD+M	0	0	0
+Canneal	TLP-LD	0	0	0
+Canneal	TRPI-LD	0	0	0
+Canneal	TRPI-LD+M	0	0	0
