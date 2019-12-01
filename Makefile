@@ -244,6 +244,11 @@ stream: $(WDEPS)
 
 clean:
 	+$(MAKE) -C $(WORKLOADS) clean
+	+$(MAKE) -C evaluation clean
 
 clean-workloads:
 	+$(MAKE) -C $(WORKLOADS) clean
+
+clean-evaluation:
+	+$(MAKE) -C evaluation clean	
+

@@ -13,7 +13,7 @@ from matplotlib import cm
 # Plot Setup
 ###############################################################################
 
-CSV_FILE="figure09.csv"
+CSV_FILE="figure9/figure9a_absolute.csv"
 COLOR_MAP='PRGn'
 
 # the data labels we are interested in...
@@ -50,6 +50,8 @@ plt.rc('legend',**{'fontsize':13, 'frameon': 'false'})
 data = dict()
 for w in workloads :
     data[w] = dict()
+    for c in configs :
+        data[w][c] = (0,0)
 
 with open(CSV_FILE, 'r') as datafile :
     csvreader = csv.reader(datafile, delimiter='\t', quotechar='|')

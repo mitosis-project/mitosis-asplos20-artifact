@@ -12,21 +12,12 @@
 ROOT=$(dirname `readlink -f "$0"`)
 
 FIGURESCIPTS=$ROOT/scripts/plotting/
+LOGSCRIPT_F6F10=$ROOT/scripts/process_logs_f6f10.py
 
 function generate_plots {
     echo " > $1"
 
     pushd "$1" > /dev/null
-
-    pushd "singlesocket" 
-    echo "   > Single Socket Benchmarks"
-    python3 ./process_logs.py > /dev/null
-    popd 
-
-    pushd "multisocket"
-    echo "   > Multi Socket Benchmarks"
-    python3 ./process_logs.py > /dev/null
-    popd 
 
     echo " > Generating Plots" 
 
@@ -34,35 +25,35 @@ function generate_plots {
     python3 $FIGURESCIPTS/figure4.py > /dev/null
     echo "   > Figure 6"
     python3 $FIGURESCIPTS/figure6.py > /dev/null
-    echo "   > Figure 9a"
+    # echo "   > Figure 9a"
     python3 $FIGURESCIPTS/figure9a.py > /dev/null
-    echo "   > Figure 9b"
+    # echo "   > Figure 9b"
     python3 $FIGURESCIPTS/figure9b.py > /dev/null
     echo "   > Figure 10a"
-    python3 $FIGURESCIPTS/figure10a.py > /dev/null
+    python3 $FIGURESCIPTS/figure10a.py 
     echo "   > Figure 10b"
-    python3 $FIGURESCIPTS/figure10b.py > /dev/null
+    python3 $FIGURESCIPTS/figure10b.py 
 
     popd 
 }
 
-pushd "$ROOT/evaluation" > /dev/null
+echo "Processing Logs.."
+
+pushd "$ROOT/scripts" > /dev/null
+python3 process_logs_fig_6-9-10.py
+popd > /dev/null
 
 echo "Generating Plots..."
+pushd "$ROOT/evaluation" > /dev/null
 
 generate_plots "reference"
-#generate_plots "measured"
+generate_plots "measured"
 
-echo " > TODO!"
-echo " > Figure 1"
-echo " > Figure 3"
-echo " > Figure 4"
-echo " > Figure 6"
-echo " > Figure 9"
-echo " > Figure 10"
-echo " > Figure 11"
-echo " > Table 5"
-echo " > Table 6"
+# copy the no-data figures
+pushd "$ROOT/evaluation" > /dev/null
+make
+popd > /dev/null
+
 
 echo "Generating Reports..."
 echo " > artifact-evaluation.html"
@@ -74,4 +65,4 @@ pandoc -o report/artifact-evaluation.pdf template/artifact-evaluation.md
 popd > /dev/null
 
 echo "Opening PDF. evaluation/report/artifact-evaluation.pdf"
-xdg-open evaluation/report/artifact-evaluation.pdf
+xdg-open $ROOT/evaluation/report/artifact-evaluation.pdf
