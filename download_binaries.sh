@@ -11,7 +11,7 @@ set -e
 #          Abhishek Bhattacharjee, and Ashish Panwar
 ###############################################################################
 
-ZENODO_DOI=10.5281/zenodo.3553474
+ZENODO_DOI=10.5281/zenodo.3558908
 
 echo "Downloading artifact from doi::$ZENODO_DOI"
 
