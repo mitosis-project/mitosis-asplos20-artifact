@@ -28,4 +28,4 @@ for bench in $BENCHMARKS; do
 	done
 done
 # --- process the output logs
-$ROOT/process_logs_f6f10.py
+$ROOT/process_logs_fig_6-9-10.py

@@ -9,20 +9,21 @@ curr_config = ""
 summary = []
 benchmarks = []
 
-#---directories that contain the data
+# --- directories that contain the data
 #figures = ["figure6", "figure9", "figure10"]
-figures = ["figure6", "figure10"]
+figures = ["figure6", "figure10", "figure9"]
 
-#---all workload configurations
+# --- all workload configurations
 configs = ["LPLD", "LPRD", "LPRDI", "RPLD", "RPILD", "RPRD", "RPIRDI", "RPLDM", "RPILDM",
-            "TLPLD", "TLPRD", "TLPRDI", "TRPLD", "TRPILD", "TRPRD", "TRPIRDI", "TRPLDM", "TRPILDM"]
+            "TLPLD", "TLPRD", "TLPRDI", "TRPLD", "TRPILD", "TRPRD", "TRPIRDI", "TRPLDM", "TRPILDM",
+			"F", "FM", "FA", "FAM", "I", "IM", "TF", "TFM", "TFA", "TFAM", "TI", "TIM"]
 
 pretty_configs = ["LP-LD", "LP-RD", "LP-RDI", "RP-LD", "RPI-LD", "RP-RD", "RPI-RDI", "RP-LDM", "RPI-LD+M",
-            "TLP-LD", "TLP-RD", "TLP-RDI", "TRP-LD", "TRPI-LD", "TRP-RD", "TRPI-RDI", "TRP-LD+M", "TRPI-LD+M"]
-#---all workloads
-workloads = ["gups", "btree", "hashjoin", "redis", "xsbench", "pagerank", "liblinear", "canneal"]
-pretty_workloads = ["GUPS", "BTree", "HashJoin", "Redis", "XSBench", "PageRank", "LibLinear", "Canneal"]
-#configs = ["LPLD", "LPRD", "RPLD", "LPRDI", "RPILD", "RPRD", "RPIRDI"]
+            "TLP-LD", "TLP-RD", "TLP-RDI", "TRP-LD", "TRPI-LD", "TRP-RD", "TRPI-RDI", "TRP-LD+M", "TRPI-LD+M",
+			"F", "F+M", "F-A", "F-A+M", "I", "I+M", "TF", "TF+M", "TF-A", "TF-A+M", "TI", "TI+M"]
+# --- all workloads
+workloads = ["gups", "btree", "hashjoin", "redis", "xsbench", "pagerank", "liblinear", "canneal", "memcached", "graph500"]
+pretty_workloads = ["GUPS", "BTree", "HashJoin", "Redis", "XSBench", "PageRank", "LibLinear", "Canneal", "Memcached", "Graph500"]
 
 def get_time_from_log(line):
     exec_time = int(line[line.find(":")+2:])
@@ -74,7 +75,7 @@ def process_perf_log(path):
     if cycles == 0:
         return
 
-    #pwc_overhead = (dtlb_miss_cycles * 100)/cycles
+    # pwc_overhead = (dtlb_miss_cycles * 100)/cycles
     fd.close()
     output = {}
     output["bench"] = curr_bench
@@ -138,16 +139,22 @@ def dump_workload_config_average(output, bench, config, fd, absolute):
     count = 0
     baseline = 0
     baseline_pwc = 0
+    baseline_config = "F"
+
+	# --- select the appropriate baseline config
+    if configs.index(config) < configs.index("F"):
+        baseline_config="LPLD"
+
     for result in output:
-        if result["bench"] == bench and result["config"] == "LPLD":
+        if result["bench"] == bench and result["config"] == baseline_config:
             baseline += result["cycles"]
             baseline_pwc += result["pwc"]
             count += 1
 
     # --- incase baseline is not present
     if count == 0:
-        print("Baseline not found for %s %s" %(curr_bench, curr_config))
-        print("Unable to normalize.")
+        #print("Baseline not found for %s %s" %(curr_bench, curr_config))
+        #print("Unable to normalize.")
         return
 
    # --- take the average
@@ -183,7 +190,7 @@ def process_all_runs(fd, output, absolute):
 
 def gen_figure6_csv(path, absolute):
     # --- put it under evaluation
-    root=os.path.dirname(os.getcwd())
+    root = os.path.dirname(os.path.dirname(os.path.realpath(__file__)))
     fd6_path = os.path.join(root, "evaluation/measured/figure6/figure6_normalized.csv")
     if absolute:
         fd6_path = os.path.join(root, "evaluation/measured/figure6/figure6_absolute.csv")
@@ -216,13 +223,13 @@ def gen_figure6_csv(path, absolute):
 
 def gen_figure10_csv(path, thp, absolute):
     # --- put it under evaluation
-    root = os.path.dirname(os.getcwd())
+    root = os.path.dirname(os.path.dirname(os.path.realpath(__file__)))
     out_file = os.path.join(root, "evaluation/measured/figure10")
-    fig10_configs = ["LP-LD", "RPI-LD", "RPI-LD+M"]
     path_suffix="_normalized"
     if absolute:
         path_suffix="_absolute"
 
+    fig10_configs = ["LP-LD", "RPI-LD", "RPI-LD+M"]
     if thp == True:
         out_file = os.path.join(out_file, "figure10b" + path_suffix + ".csv")
         fig10_configs = ["TLP-LD", "TRPI-LD", "TRPI-LD+M"]
@@ -267,9 +274,64 @@ def gen_figure10_csv(path, thp, absolute):
         prefix="Absolute"
 
     print("%s: %s" %(prefix, fd10_path))
+
+def gen_figure9_csv(path, thp, absolute):
+    # --- put it under evaluation
+    root = os.path.dirname(os.path.dirname(os.path.realpath(__file__)))
+    out_file = os.path.join(root, "evaluation/measured/figure9")
+    path_suffix="_normalized"
+    if absolute:
+        path_suffix="_absolute"
+
+    fig9_configs = ["F", "F+M", "F-A", "F-A+M", "I", "I+M"]
+    if thp == True:
+        out_file = os.path.join(out_file, "figure9b" + path_suffix + ".csv")
+        fig9_configs = ["TF", "TF+M", "TF-A", "TF-A+M", "TI", "TI+M"]
+    else:
+        out_file = os.path.join(out_file, "figure9a" + path_suffix + ".csv")
+
+    fd9_path = os.path.join(os.getcwd(), out_file)
+    fd9 = open(fd9_path, "w")
+    if fd9 is None:
+        print("ERROR creating %s." %out_file)
+        sys.exit()
+
+    fd = open(path, "r")
+    if fd is None:
+        print("ERROR unable to open the common csv file")
+        sys.exit()
+
+    # --- copy the first line as it is
+    fd9.write(fd.readline())
+    line = fd.readline()
+    curr_bench="XXX"
+    while line:
+        columns = line.split()
+        if columns[1] in fig9_configs:
+            fd9.write(line)
+        #if columns[0] in workloads:
+        #    curr_bench = columns[0]
+        #    isNew = 1
+
+        #if columns[0] in fig10_configs or columns[1] in fig10_configs:
+        #    if isNew == 1 and thp == True:
+        #        line = curr_bench + line
+        #        isNew = 0
+        #    fd10.write(line)
+
+        line = fd.readline()
+   
+    fd.close() 
+    fd9.close()
+    prefix="Normalized"
+    if absolute:
+        prefix="Absolute"
+
+    print("%s: %s" %(prefix, fd9_path))
     
 if __name__=="__main__":
-    root = os.path.dirname(os.getcwd())
+    root = os.path.dirname(os.path.dirname(os.path.realpath(__file__)))
+    print(root)
     out_dir = os.path.join(root, "evaluation/measured")
 
     print("Reading dumps for Figure-6 and Figure-10")
@@ -297,14 +359,24 @@ if __name__=="__main__":
     # --- process absolute and normalized separately
     gen_figure6_csv(norm_src, False)
     gen_figure6_csv(abs_src, True)
-    print("Generating Figure-10(a) csv file")
+
     # --- process absolute and normalized separately
+    print("Generating Figure-10(a) csv file")
     gen_figure10_csv(norm_src, False, False) # --- Fig-a/Fig-b and absolute/nomalized
     gen_figure10_csv(abs_src, False, True) # --- Fig-a/Fig-b and absolute/nomalized
     print("Generating Figure10(b) csv file")
     gen_figure10_csv(norm_src, True, False) # --- Fig-a/Fig-b and absolute/nomalized
     gen_figure10_csv(abs_src, True, True) # --- Fig-a/Fig-b and absolute/nomalized
-    # --- process absolute and normalized separately
+
+
+	# --- process absolute and normalized separately
+    print("Generating Figure-9(a) csv file")
+    gen_figure9_csv(norm_src, False, False) # --- Fig-a/Fig-b and absolute/nomalized
+    gen_figure9_csv(abs_src, False, True) # --- Fig-a/Fig-b and absolute/nomalized
+    print("Generating Figure-9(b) csv file")
+    gen_figure9_csv(norm_src, True, False) # --- Fig-a/Fig-b and absolute/nomalized
+    gen_figure9_csv(abs_src, True, True) # --- Fig-a/Fig-b and absolute/nomalized
+
     fd_norm.close()
     fd_abs.close()
     #print("Common csv files:")

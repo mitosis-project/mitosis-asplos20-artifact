@@ -27,3 +27,5 @@ for bench in $BENCHMARKS; do
 		bash $ROOT/run_f9_one.sh $bench $config
 	done
 done
+# --- process the output logs
+$ROOT/process_logs_fig_6-9-10.py
