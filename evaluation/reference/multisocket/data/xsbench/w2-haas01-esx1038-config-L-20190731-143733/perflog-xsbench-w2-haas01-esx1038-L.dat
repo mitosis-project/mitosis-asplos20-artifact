@@ -1,93 +1,0 @@
-[description]
-Microbenchmark Runlog
-[workload]
-xsbench
-[name]
-xsbench
-[date]
-20190731-143733
-[hostname]
-w2-haas01-esx1038
-[kernel]
-4.17.0lptr+
-[autonuma]
-0
-[openmp]
-
-[smt]
-on
-[columns]
-run,data,ptables,thp,pti,di,mi
-
-@<exp>
-@ /home/ashish/mitosis-tools/bin/xsbench -t 112 -p 500000 -g 50000
-,,0,,,,0
-# started on Wed Jul 31 14:38:05 2019
-
-1882174484724,,cycles,276554702157,36.50,,
-16129775809,,dTLB-loads,219986889301,29.04,,
-1329890803,,dTLB-load-misses,204315604395,26.98,8.24,of all dTLB cache hits
-5444543727,,dTLB-stores,163514012769,21.60,,
-1400536,,dTLB-store-misses,173500114491,22.92,,
-105426245225,,dtlb_load_misses.walk_duration,145252835243,19.19,,
-199771923,,dtlb_store_misses.walk_duration,204345625842,27.00,,
-1247174911,,dtlb_load_misses.walk_completed,268304052752,35.46,,
-1400380,,dtlb_store_misses.walk_completed,275246684754,36.39,,
-0,,EPT.WALK_CYCLES,277285761742,36.66,,
-@</exp>
-Execution Time (minutes): 0 minutes and 7 seconds.
-Execution Time (seconds): 7
-
-
-
-================================================================================
-                   __   __ ___________                 _                        
-                   \ \ / //  ___| ___ \               | |                       
-                    \ V / \ `--.| |_/ / ___ _ __   ___| |__                     
-                    /   \  `--. \ ___ \/ _ \ '_ \ / __| '_ \                    
-                   / /^\ \/\__/ / |_/ /  __/ | | | (__| | | |                   
-                   \/   \/\____/\____/ \___|_| |_|\___|_| |_|                   
-
-================================================================================
-                    Developed at Argonne National Laboratory
-                                   Version: 18
-================================================================================
-                                  INPUT SUMMARY
-================================================================================
-Simulation Method:            History Based
-Grid Type:                    Unionized Grid
-Materials:                    12
-H-M Benchmark Size:           large
-Total Nuclides:               355
-Gridpoints (per Nuclide):     50,000
-Unionized Energy Gridpoints:  17,750,000
-Particle Histories:           500,000
-XS Lookups per Particle:      34
-Total XS Lookups:             34
-Threads:                      112
-Est. Memory Usage (MB):       25,120
-================================================================================
-                         INITIALIZATION - DO NOT PROFILE
-================================================================================
-Generating Nuclide Energy Grids...
-Sorting Nuclide Energy Grids...
-Generating Unionized Energy Grid...
-Copying and Sorting all nuclide grids...
-Assigning energies to unionized grid...
-Assigning pointers to Unionized Energy Grid...
-Loading Mats...
-
-================================================================================
-                                   SIMULATION
-================================================================================
-Beginning history based simulation...
-Calculating XS's... (0% completed)Calculating XS's... (0% completed)Calculating XS's... (0% completed)Calculating XS's... (0% completed)Calculating XS's... (0% completed)Calculating XS's... (0% completed)Calculating XS's... (0% completed)Calculating XS's... (0% completed)Calculating XS's... (0% completed)Calculating XS's... (0% completed)Calculating XS's... (0% completed)Calculating XS's... (0% completed)Calculating XS's... (0% completed)Calculating XS's... (0% completed)Calculating XS's... (0% completed)Calculating XS's... (0% completed)Calculating XS's... (0% completed)Calculating XS's... (0% completed)Calculating XS's... (0% completed)Calculating XS's... (0% completed)Calculating XS's... (0% completed)Calculating XS's... (0% completed)Calculating XS's... (0% completed)Calculating XS's... (0% completed)Calculating XS's... (0% completed)Calculating XS's... (0% completed)Calculating XS's... (1% completed)Calculating XS's... (1% completed)Calculating XS's... (1% completed)Calculating XS's... (1% completed)Calculating XS's... (1% completed)Calculating XS's... (1% completed)Calculating XS's... (1% completed)Calculating XS's... (1% completed)Calculating XS's... (1% completed)Calculating XS's... (1% completed)Calculating XS's... (1% completed)Calculating XS's... (1% completed)Calculating XS's... (1% completed)Calculating XS's... (1% completed)Calculating XS's... (1% completed)Calculating XS's... (1% completed)Calculating XS's... (1% completed)Calculating XS's... (1% completed)Calculating XS's... (1% completed)
-Simulation complete.
-================================================================================
-                                     RESULTS
-================================================================================
-Threads:     112
-Runtime:     7.181 seconds
-Lookups:     17,000,000
-Lookups/s:   2,367,237
-================================================================================
