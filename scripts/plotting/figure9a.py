@@ -19,7 +19,8 @@ COLOR_MAP='PRGn'
 # the data labels we are interested in...
 baseline = "F"
 configs = [ "F" ,"F+M", "F-A", "F-A+M", "I", "I+M" ]
-workloads = ["BTree", "HashJoin", "XSBench", "Graph500", "Canneal"]
+#workloads = ["Memcached", "BTree", "HashJoin", "XSBench", "Graph500", "Canneal"]
+workloads = ["Canneal", "Memcached", "XSBench", "Graph500", "HashJoin", "BTree"]
 
 
 # this is the number of bars per workload

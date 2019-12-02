@@ -9,12 +9,12 @@ import matplotlib.pyplot as plt
 from matplotlib.backends.backend_pdf import PdfPages
 from matplotlib import cm
 
-CSV_FILE="figure11.csv"
+CSV_FILE="figure11/figure11_absolute.csv"
 COLOR_MAP='PRGn'
 
 # the data labels we are interested in...
-baseline = "TLP-LD"
-configs = [ "TLP-LD" ,"TRPI-LD", "TRPI-LD+M" ]
+baseline = "LP-LD"
+configs = [ "LP-LD", "TLP-LD" ,"TRPI-LD", "TRPI-LD+M" ]
 workloads = ["GUPS",  "Redis", "XSBench" ]
 
 

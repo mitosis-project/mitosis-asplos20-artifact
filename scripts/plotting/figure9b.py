@@ -13,10 +13,10 @@ CSV_FILE="figure9/figure9b_absolute.csv"
 COLOR_MAP='PRGn'
 
 # the data labels we are interested in...
-baseline = "TF"
-configs = [ "TF" ,"TF+M", "TF-A", "TF-A+M", "TI", "TI+M" ]
-workloads = ["BTree", "HashJoin", "XSBench", "Graph500", "Canneal"]
-
+baseline = "F"
+configs = [ "F", "TF" ,"TF+M", "TF-A", "TF-A+M", "TI", "TI+M" ]
+#workloads = ["Memcached", "BTree", "HashJoin", "XSBench", "Graph500", "Canneal"]
+workloads = ["Canneal", "Memcached", "XSBench", "Graph500", "HashJoin", "BTree"]
 
 
 # this is the number of bars per workload

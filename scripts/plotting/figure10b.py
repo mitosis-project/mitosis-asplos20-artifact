@@ -13,8 +13,8 @@ CSV_FILE="figure10/figure10b_absolute.csv"
 COLOR_MAP='PRGn'
 
 # the data labels we are interested in...
-baseline = "TLP-LD"
-configs = [ "TLP-LD" ,"TRPI-LD", "TRPI-LD+M" ]
+baseline = "LP-LD"
+configs = [ "LP-LD", "TLP-LD" ,"TRPI-LD", "TRPI-LD+M" ]
 workloads = ["GUPS", "BTree", "HashJoin", "Redis", "XSBench", "PageRank", "LibLinear", "Canneal"]
 
 
