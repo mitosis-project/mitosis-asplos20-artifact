@@ -13,11 +13,13 @@ echo "************************************************************************"
 echo "ASPLOS'20 - Artifact Evaluation - Mitosis - DATASET"
 echo "************************************************************************"
 
-SRC_SCRIPT="canneal_netlist.pl"
+ROOT=$(dirname `readlink -f "$0"`)
+
+SRC_SCRIPT="$ROOT/canneal_netlist.pl"
 URL_SCRIPT="https://parsec.cs.princeton.edu/download/other/canneal_netlist.pl"
 if [ ! -e $SRC_SCRIPT ]; then
     echo "Canneal gen script is missing. Downloading it now..."
-    wget $URL_SCRIPT
+    wget $URL_SCRIPT -P $ROOT/
     if [ $? -ne 0 ]; then
         echo "Error in downloading canneal gen script"
         exit
@@ -26,5 +28,6 @@ fi
 
 chmod +x $SRC_SCRIPT
 echo "Generating small dataset..."
-./$SRC_SCRIPT 10000 11000 100000000 > canneal_small
+$SRC_SCRIPT 10000 11000 100000000 > $ROOT/canneal_small
+#TODO: Generate Large dataset
 #echo "Generating large dataset..."
