@@ -11,7 +11,8 @@ all: mitosis-linux mitosis-linux.deb mitosis-numactl mitosis-perf \
 	 btree canneal graph500 gups hashjoin liblinear pagerank redis \
 	 xsbench memops memcached
 
-linux: mitosis-linux mitosis-linux.deb mitosis-numactl mitosis-perf
+linux: mitosis-linux mitosis-linux.deb mitosis-numactl mitosis-perf \
+	   mitosis-page-table-dump
 
 workloads: btree canneal graph500 gups hashjoin liblinear pagerank redis \
 		   xsbench memops memcached
@@ -107,6 +108,24 @@ mitosis-numactl: $(NDEPS) sources/mitosis-numactl/Makefile
 	cp sources/mitosis-numactl/.libs/libnuma.la build
 	cp sources/mitosis-numactl/.libs/libnuma.so* build
 	cp sources/mitosis-numactl/.libs/numactl build
+
+###############################################################################
+# Page Table Dumping tool
+###############################################################################
+
+mitosis-page-table-dump :
+	+$(MAKE) -C sources/mitosis-page-table-dump
+	cp sources/mitosis-page-table-dump/bin/* build
+
+install-lkml:
+	insmod bin/page-table-dump.ko
+
+uninstall-lkml: 
+	rmmod bin/page-table-dump.ko
+
+update-lkml: 
+	rmmod bin/page-table-dump.ko
+	insmod bin/page-table-dump.ko
 
 
 ###############################################################################

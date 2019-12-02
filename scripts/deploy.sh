@@ -1,7 +1,7 @@
-#!/bin/bash
+#! /bin/bash
 
 ###############################################################################
-# Script to run all evaluations of the paper
+# Deployment of Binaries
 # 
 # Paper: Mitosis - Mitosis: Transparently Self-Replicating Page-Tables 
 #                  for Large-Memory Machines
@@ -9,27 +9,26 @@
 #          Abhishek Bhattacharjee, and Ashish Panwar
 ###############################################################################
 
+SCRIPTROOT=$(dirname `readlink -f "$0"`)
+ROOT=$(dirname `readlink -f "$SCRIPTROOT"`)
+
+source $ROOT/scripts/site_config.sh
+
 echo "########################################################################"
 echo "ASPLOS'20 - Artifact Evaluation - Mitosis"
 echo "########################################################################"
 echo ""
-echo "Binary Selector"
+echo "Deployment of Binaries and Scripts to $URL"
 
-ROOT=$(dirname `readlink -f "$0"`)
+REMOTE=$(echo $URL | cut -d ":" -f1)
+DIRECTORY=$(echo $URL | cut -d ":" -f2)
 
-BINDIRECTORY=$(readlink $ROOT/bin)
-BINDIR=$(basename $BINDIRECTORY)
+echo "remote-host: $REMOTE"
+echo "remote-directory: $DIRECTORY"
 
-if [[ "$BINDIR" == "build" ]]; then
-	echo "Using locally compiled binaries"
-	rm -f $ROOT/bin
-	ln -s $ROOT/precompiled $ROOT/bin
-	exit 0
-fi
+echo "create target directory"
+ssh $REMOTE "mkdir -p $DIRECTORY/evaluation/measured"
 
-if [[ "$BINDIR" == "precompiled" ]]; then
-	echo "Using pre-compiled binaries"
-	rm -f $ROOT/bin
-	ln -s $ROOT/build $ROOT/bin
-	exit 0
-fi
+echo "deploying files"
+rsync -avz $ROOT/bin $ROOT/precompiled $ROOT/build $ROOT/datasets \
+           $ROOT/scripts $URL

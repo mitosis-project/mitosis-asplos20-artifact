@@ -9,7 +9,8 @@
 #          Abhishek Bhattacharjee, and Ashish Panwar
 ###############################################################################
 
-ROOT=$(dirname `readlink -f "$0"`)
+SCRIPTROOT=$(dirname `readlink -f "$0"`)
+ROOT=$(dirname `readlink -f "$SCRIPTROOT"`)
 
 FIGURESCIPTS=$ROOT/scripts/plotting/
 LOGSCRIPT_F6F10=$ROOT/scripts/process_logs_f6f10.py

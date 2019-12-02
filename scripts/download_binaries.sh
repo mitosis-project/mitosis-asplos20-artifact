@@ -11,11 +11,14 @@ set -e
 #          Abhishek Bhattacharjee, and Ashish Panwar
 ###############################################################################
 
+SCRIPTROOT=$(dirname `readlink -f "$0"`)
+ROOT=$(dirname `readlink -f "$SCRIPTROOT"`)
+
 ZENODO_DOI=10.5281/zenodo.3558908
 
 echo "Downloading artifact from doi::$ZENODO_DOI"
 
-pushd precompiled > /dev/null
+pushd $ROOT/precompiled > /dev/null
 
 if [[ ! -f artifactfiles.list ]]; then
     echo "> Downloading artifact list using zenodo_get"

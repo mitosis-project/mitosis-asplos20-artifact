@@ -28,14 +28,14 @@ See LICENSE file.
 Directory Structure
 -------------------
 
- * `/precompiled` contains the downloaded binaries
- * `/build` contains the locally compiled binaries
- * `/sources` contains the source code of the binaries
- * `/datasets` contains the datasets required for the binaries
- * `/scripts` contains scripts to run the experiments
- * `/bin` points to the used binaries for the evaluation (you can use 
-   `toggle_build.sh` to switch between precompiled and locally compined 
-   binaries)
+ * `precompiled` contains the downloaded binaries
+ * `build` contains the locally compiled binaries
+ * `sources` contains the source code of the binaries
+ * `datasets` contains the datasets required for the binaries
+ * `scripts` contains scripts to run the experiments
+ * `bin` points to the used binaries for the evaluation (you can use 
+   `scripts/toggle_build.sh` to switch between precompiled and locally 
+   compined binaries)
 
 
 Hardware Dependencies
@@ -89,9 +89,9 @@ which download the pre-compiled binaries, or source code for compilation.
 To obtain the pre-compiled binaries execute:
 
 ```
-./download_binaries.sh
+./scripts/download_binaries.sh
 ```
-The pre-compiled binaries are available on [Zenodo.org](https://zenodo.org/). 
+The pre-compiled binaries are available on [Zenodo.org](https://zenodo.org/record/3558908). 
 You can download them manually and place them in the `precompiled` directory. 
 
 
@@ -133,13 +133,31 @@ Evaluation Preparation
 
 To run the evaluations of the paper, you need a suitable machine (see Hardware 
 Dependencies) and you need to boot your machine with the Mitosis-Linux you
-downloaded or compiled yourself. 
+downloaded or compiled yourself. Both, the kernel image and the headers!.
 
-TODO: install the kernel module...
+To install the kernel module for page-table dumping you need to execute:
+```
+make install lkml
+```
 
+It's best to compile it on the machine runnig Mitosis-Linux. 
+```
+make mitosis-page-table-dump
+```
+Deploying
+---------
+
+To deploy the binaries and scripts, just clone the repository on the target 
+machine. Or you can set your target host-name and directory in 
+`./scripts/site_config.sh`
+
+```
+./scripts/deploy.sh
+```
 
 Preparing Datasets
-----------------------
+------------------
+
 Some workloads require datasets to run. Scripts to download or generate the datasets
 are placed in `datasets/`. These datasets require approximately 100GB of disk space.
 Generate datasets as:
@@ -148,6 +166,7 @@ Generate datasets as:
 datasets/prepare_liblinear_dataset.sh
 datasets/prepare_canneal_datasets.sh
 ```
+
 
 Running the Experiments
 -----------------------
@@ -163,24 +182,24 @@ scripts/run_all.sh
 
 To run the experiments for a single figure, do:
 
- * Figure 6 - `scripts/run_f6_all.sh`
- * Figure 9a - `scripts/run_f9a_all.sh`
- * Figure 9b - `scripts/run_f9b_all.sh`
- * Figure 10a - `scripts/run_10a_all.sh`
- * Figure 10b - `scripts/run_10b_all.sh`
- * Figure 11 - `scripts/run_f11.sh`
- * Table 5 - `scripts/run_t5.sh`
+ * Figure 6 - `./scripts/run_f6_all.sh`
+ * Figure 9a - `./scripts/run_f9a_all.sh`
+ * Figure 9b - `./scripts/run_f9b_all.sh`
+ * Figure 10a - `./scripts/run_10a_all.sh`
+ * Figure 10b - `./scripts/run_10b_all.sh`
+ * Figure 11 - `./scripts/run_f11.sh`
+ * Table 5 - `./scripts/run_t5.sh`
 
 You can also execute each bar of Figure-6, Figure-9 and Figure-10 separately.
 For Figure-6 and Figure-10, execute as:
 
 ```
-scripts/run_f6f10_one.sh BENCHMARK CONFIG
+./scripts/run_f6f10_one.sh BENCHMARK CONFIG
 ```
 For Figure-9, execute as:
 
 ```
-scripts/run_f9_one.sh BENCHMARK CONFIG`
+./scripts/run_f9_one.sh BENCHMARK CONFIG`
 ```
 
 Naming conventions for arguments:
@@ -188,7 +207,7 @@ Naming conventions for arguments:
  * Use "small letters" for benchmark name (e.g., btree, xsbench).
  * Use "CAPITAL LETTERS" for configuration name (e.g., TLPLD, RPILDM).
 
-Refer to `scripts/run_f6_all.sh` and `scripts/run_f10a_all.sh` for more examples on how to
+Refer to `./scripts/run_f6_all.sh` and `./scripts/run_f10a_all.sh` for more examples on how to
 execute a single benchmark configuration.
 
 All output logs will be redirected to "evaluation/measured/$FIGURENUM".
@@ -196,9 +215,17 @@ All output logs will be redirected to "evaluation/measured/$FIGURENUM".
 To process the logs for Figure-6, Figure-9 and Figure-10, execute:
 
 ```
-scripts/process_logs_fig_6-9-10.py`
+./scripts/process_logs_fig_6-9-10.py`
 ```
 
+Collecting Experiment Data
+--------------------------
+
+In case you used the deploy script, you can execute
+```
+./scripts/collect-results.sh
+```
+To copy the results from the remote machine to your local one.
 
 Compare the Experiments
 -----------------------
@@ -207,7 +234,7 @@ When you collected all the experimental data, you can compare them against
 the reference data shown in the paper:
 
 ```
-./compile_report.sh
+./scripts/compile_report.sh
 ```
 
 
