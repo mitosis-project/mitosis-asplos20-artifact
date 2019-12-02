@@ -188,7 +188,7 @@ Naming conventions for arguments:
  * Use "small letters" for benchmark name (e.g., btree, xsbench).
  * Use "CAPITAL LETTERS" for configuration name (e.g., TLPLD, RPILDM).
 
-Refer to `scripts/run_f6_all.sh` and `run_f10a_all.sh` for more examples on how to
+Refer to `scripts/run_f6_all.sh` and `scripts/run_f10a_all.sh` for more examples on how to
 execute a single benchmark configuration.
 
 All output logs will be redirected to "evaluation/measured/$FIGURENUM".
