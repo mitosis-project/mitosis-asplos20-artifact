@@ -31,6 +31,8 @@ Directory Structure
  * `/precompiled` contains the downloaded binaries
  * `/build` contains the locally compiled binaries
  * `/sources` contains the source code of the binaries
+ * `/datasets` contains the datasets required for the binaries
+ * `/scripts` contains scripts to run the experiments
  * `/bin` points to the used binaries for the evaluation (you can use 
    `toggle_build.sh` to switch between precompiled and locally compined 
    binaries)
@@ -136,33 +138,66 @@ downloaded or compiled yourself.
 TODO: install the kernel module...
 
 
+Preparing Datasets
+----------------------
+Some workloads require datasets to run. Scripts to download or generate the datasets
+are placed in `datasets/`. These datasets require approximately 100GB of disk space.
+Generate datasets as:
+
+```
+datasets/prepare_liblinear_dataset.sh
+datasets/prepare_canneal_datasets.sh
+```
+
 Running the Experiments
 -----------------------
 
 Before you start running the experiments, make sure you fill in the site
 configuration file `site-config.sh`.
 
-The process of running an experiment is as follows: the script will copy the
-required binaries to the target machine, execute the workload and collect 
-the results. This requires an SSH connection to the test machine.
-
 To run all experiments, execute (this may take a while...)
 
 ```
-./run_all.sh
+scripts/run_all.sh
 ```
 
 To run the experiments for a single figure, do:
 
- * Figure 1 - `./run_f1.sh`
- * Figure 3 - `./run_f3.sh`
- * Figure 4 - `./run_f4.sh`
- * Figure 6 - `./run_f6.sh`
- * Figure 9 - `./run_f9.sh`
- * Figure 10 - `./run_f10.sh`
- * Figure 11 - `./run_f11.sh`
- * Table 5 - `./run_t5.sh`
- * Table 6 - `./run_t6.sh`
+ * Figure 6 - `scripts/run_f6_all.sh`
+ * Figure 9a - `scripts/run_f9a_all.sh`
+ * Figure 9b - `scripts/run_f9b_all.sh`
+ * Figure 10a - `scripts/run_10a_all.sh`
+ * Figure 10b - `scripts/run_10b_all.sh`
+ * Figure 11 - `scripts/run_f11.sh`
+ * Table 5 - `scripts/run_t5.sh`
+
+You can also execute each bar of Figure-6, Figure-9 and Figure-10 separately.
+For Figure-6 and Figure-10, execute as:
+
+```
+scripts/run_f6f10_one.sh BENCHMARK CONFIG
+```
+For Figure-9, execute as:
+
+```
+scripts/run_f9_one.sh BENCHMARK CONFIG`
+```
+
+Naming conventions for arguments:
+
+ * Use "small letters" for benchmark name (e.g., btree, xsbench).
+ * Use "CAPITAL LETTERS" for configuration name (e.g., TLPLD, RPILDM).
+
+Refer to `scripts/run_f6_all.sh` and `run_f10a_all.sh` for more examples on how to
+execute a single benchmark configuration.
+
+All output logs will be redirected to "evaluation/measured/$FIGURENUM".
+
+To process the logs for Figure-6, Figure-9 and Figure-10, execute:
+
+```
+scripts/process_logs_fig_6-9-10.py`
+```
 
 
 Compare the Experiments
