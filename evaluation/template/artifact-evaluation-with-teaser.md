@@ -6,6 +6,64 @@ Artifact Evaluation Report.
 `\newpage`{=latex}
 
 
+Figure 1 - Teaser Figure
+------------------------
+
+**Script:** `./run_f1.sh`
+
+**Description:** Percentage of local and remote leaf PTEs as observed from each 
+socket on a TLB miss and Bottom Graph: Normalized runtime, for two workloads showing
+multi-socket (left) and workload migration (right) scenarios
+with their respective improvement using Mitosis.
+
+**Reference**
+
+![Figure 1 - Reference](reference/figure01.png "Figure 1 - Reference"){ width=100% }\
+
+**Reproduction**
+
+![Figure 1 - Reproduction](measured/figure01.png "Figure 1 - Reproduction"){ width=100% }\
+
+`\newpage`{=latex}
+
+
+Figure 3 - Remote Page-Table Entries
+------------------------------------
+
+**Script:** `./run_f3.sh`
+
+**Description:** Analysis of page-table pointers from a page-table dump for a
+ multi-socket workload: Memcached.
+
+**Reference**
+
+![Figure 3 - Reference](reference/figure03.png "Figure 3 - Reference"){ width=100% }\
+
+**Reproduction**
+
+![Figure 3 - Reproduction](measured/figure03.png "Figure 3 - Reproduction"){ width=100% }\
+
+`\newpage`{=latex}
+
+
+Figure 4 - Remote Page-Tables
+-----------------------------
+
+**Script:** `./run_f4.sh` 
+
+**Description:** Percentage of remote leaf PTEs as observed from
+each socket for our multi-socket workloads.
+
+**Reference**
+
+![Figure 4 - Reference](reference/figure04.png "Figure 4 - Reference"){ width=100% }\
+
+**Reproduction**
+
+![Figure 4 - Reproduction](measured/figure04.png "Figure 4 - Reproduction"){ width=100% }\
+
+`\newpage`{=latex}
+
 
 Figure 6 - Page-Table Placement Analysis
 ----------------------------------------
