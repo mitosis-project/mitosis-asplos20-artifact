@@ -190,6 +190,7 @@ Table 5 - Runtime Overhead VMA Operations
 
 **Description:** Runtime overhead of Mitosis for virtual memory operation system 
 calls using 4-way Replication
+NOTE: this is in graph form here, table form in the paper.
 
 **Reference**
 
@@ -201,20 +202,4 @@ calls using 4-way Replication
 
 `\newpage`{=latex}
 
-
-Table 6 - Runtime Overhead End-to-End
--------------------------------------
-
-**Script:** `./run_t6.sh`
-
-**Description:** Runtimes with LP-LD setting, including initialization
-with and without Mitosis. Standard Deviation in Brackets.
-
-**Reference**
-
-![Table 6 - Reference](reference/table6.png "Table 6 - Reference"){ width=100% }\
-
-**Reproduction**
-
-![Table 6- Reproduction](measured/table6.png "Table 6- Reproduction"){ width=100% }\
 

@@ -34,6 +34,8 @@ function generate_plots {
     python3 $FIGURESCIPTS/figure10a.py 
     echo "   > Figure 10b"
     python3 $FIGURESCIPTS/figure10b.py 
+    echo "   > Table 5b"
+    python3 $FIGURESCIPTS/table5.py 
 
     popd 
 }

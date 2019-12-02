@@ -17,7 +17,7 @@ baseline = "Default"
 configstrings   = [ "4kB", "1MB", "4GB" ]
 configs = [4096, 2048*4096, 1048576 * 4096]
 
-workloads = ["MAP", "PROTECT", "UNMAP"]
+workloads = ["MAP", "PROTECT", "UNMAP", "MAP_SHARED", "PROTECT_SHARED", "UNMAP_SHARED"]
 datacolumns = {
 	'label' : -1,
 	'npages' : -1,
@@ -59,12 +59,17 @@ data = dict()
 for w in workloads :
     data[w] = dict()
     for c in configs :
-        data[w][c] = [(0,0,0), (0,0,0)]
+        data[w][c] = [(0,0,0,0), (0,0,0,0)]
 
 with open(CSV_FILE, 'r') as datafile :
     csvreader = csv.reader(datafile, delimiter='\t', quotechar='|')
     first = True
+
     for row in csvreader :
+
+        if len(row) == 0 or row[0] == ""  :
+            continue
+
         if first :
             idx = 0
             for r in row:
@@ -73,10 +78,11 @@ with open(CSV_FILE, 'r') as datafile :
             first = False
             continue
 
-        if len(row) == 0 or row[0] == "" :
-            continue
-        
         workload = row[datacolumns['label']]
+        
+        if workload not in workloads :
+            continue
+
         npages = int(row[datacolumns['npages']])
         pagesize = int(row[datacolumns['pagesize']])
         config = npages * pagesize
@@ -86,7 +92,7 @@ with open(CSV_FILE, 'r') as datafile :
         
         dmin = int(row[datacolumns['min']])/npages;
         davg = int(row[datacolumns['avg']])/npages;
-        dmax = int(row[datacolumns['95th']])/npages;
+        dmax = int(row[datacolumns['99th']])/npages;
 
         if workload in workloads and config in configs :
             if ismitosis :
@@ -98,7 +104,7 @@ with open(CSV_FILE, 'r') as datafile :
 # Plot the Graph
 ###############################################################################
 
-totalbars = (3 * len(workloads) * len(configs)) + len(workloads);
+totalbars = (3 * len(workloads) * len(configs)) + 2*len(workloads);
 
 fig, ax = plt.subplots()
 
@@ -110,18 +116,23 @@ ymax = 1
 idx = 0
 
 legends = {
-    'Mitosis' : None,
     'Default' : None,
+    'Mitosis' : None
 }
 
 for w in workloads :
     idx = idx + 1
     datalabels.append("")
+
+    idx = idx + 1
+    datalabels.append("")    
     
-    midpoint = float(idx + (idx + 3*len(configs) - 2)) / 2.0
+    midpoint = float(idx + (idx + 3*len(configs) - 1 )) / 2.0 - 1
+    midpoint = idx + (3*(len(configs) - 1) / 2.0)
+
 
     ax.text(midpoint / totalbars, -0.35, w, 
-            horizontalalignment='center', fontsize=10,
+            horizontalalignment='center', fontsize=9,
             transform=ax.transAxes)
 
     for c in configs :
@@ -189,5 +200,5 @@ ax.legend([legends[l] for l in legends.keys()], legends.keys(), loc=4, ncol=4,
           borderaxespad=0.,
           bbox_to_anchor=(-0.15, 1.01, 1.15, .102))
 
-plt.savefig('table05.pdf', bbox_inches='tight')
-plt.savefig('table05.png', bbox_inches='tight')
+plt.savefig('table5.pdf', bbox_inches='tight')
+plt.savefig('table5.png', bbox_inches='tight')

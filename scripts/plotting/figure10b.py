@@ -92,8 +92,8 @@ for w in workloads :
             transform=ax.transAxes)
 
     for c in configs :
-	if c == "LP-LD":
-		continue
+        if c == "LP-LD":
+            continue
 
         (totalcycles, walkcycles) = data[w][c]
         (base, _) = data[w][baseline]

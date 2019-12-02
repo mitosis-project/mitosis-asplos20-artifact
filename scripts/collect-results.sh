@@ -23,5 +23,5 @@ echo "Collecting results form $URL"
 REMOTE=$(echo $URL | cut -d ":" -f1)
 DIRECTORY=$(echo $URL | cut -d ":" -f2)
 
-rsync -avz $URL/evaluation/measured/* $ROOT/measured/
+rsync -avz $URL/evaluation/measured/* $ROOT/evaluation/measured/
 

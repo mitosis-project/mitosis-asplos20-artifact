@@ -92,8 +92,8 @@ for w in workloads :
             transform=ax.transAxes)
 
     for c in configs :
-	if c == "F":
-		continue
+        if c == "F":
+            continue
 
         (totalcycles, walkcycles) = data[w][c]
         (base, _) = data[w][baseline]
