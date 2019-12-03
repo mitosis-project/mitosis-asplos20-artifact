@@ -8,7 +8,7 @@ curr_bench = ""
 curr_config = ""
 summary = []
 benchmarks = []
-
+global verbose
 # --- directories that contain the data
 #figures = ["figure6", "figure9", "figure10"]
 figures = ["figure6", "figure10", "figure9"]
@@ -29,6 +29,17 @@ def get_time_from_log(line):
     exec_time = int(line[line.find(":")+2:])
     return exec_time
 
+def open_file(src, op):
+    try:
+        fd = open(src, op)
+        if fd is None:
+            raise ("Failed")
+        return fd
+    except:
+        if verbose:
+            print("Unable to open %s in %s mode" %(src, op))
+        return None
+
 def print_workload_config(log):
     global curr_bench, curr_config
     for bench in workloads:
@@ -47,8 +58,8 @@ def print_workload_config(log):
     benchmarks.append(curr_bench)
 
 def process_perf_log(path):
-    fd = open(path, "r")
-    if not fd:
+    fd = open_file(path, "r")
+    if fd is None:
         print ('error opening log file')
         sys.exit(1)
 
@@ -195,15 +206,18 @@ def gen_figure6_csv(path, absolute):
     if absolute:
         fd6_path = os.path.join(root, "evaluation/measured/figure6/figure6_absolute.csv")
 
-    fd6 = open(fd6_path, "w")
+    fd6 = open_file(fd6_path, "w")
     if fd6 is None:
-        print("ERROR creating figure6.csv.")
-        sys.exit()
+        #print("ERROR creating %s." %fd6_path)
+        #sys.exit()
+        return
 
-    fd = open(path, "r")
+    #fd = open(path, "r")
+    fd = open_file(path, "r")
     if fd is None:
-        print("ERROR unable to open the common csv file")
-        sys.exit()
+        #print("ERROR unable to open the common csv file")
+        #sys.exit()
+        return
 
     fig6_configs = ["LP-LD", "LP-RD", "LP-RDI", "RP-LD", "RPI-LD", "RP-RD", "RPI-RDI"]
     # --- copy the first line as it is
@@ -219,7 +233,8 @@ def gen_figure6_csv(path, absolute):
    
     fd.close() 
     fd6.close()
-    print("Location: %s" %fd6_path)
+    if verbose:
+		print("Location: %s" %fd6_path)
 
 def gen_figure10_csv(path, thp, absolute):
     # --- put it under evaluation
@@ -237,15 +252,16 @@ def gen_figure10_csv(path, thp, absolute):
         out_file = os.path.join(out_file, "figure10a" + path_suffix + ".csv")
 
     fd10_path = os.path.join(os.getcwd(), out_file)
-    fd10 = open(fd10_path, "w")
+    fd10 = open_file(fd10_path, "w")
     if fd10 is None:
         print("ERROR creating %s." %out_file)
         sys.exit()
 
-    fd = open(path, "r")
+    fd = open_file(path, "r")
     if fd is None:
-        print("ERROR unable to open the common csv file")
-        sys.exit()
+        #print("ERROR unable to open the common csv file")
+        #sys.exit()
+	return
 
     # --- copy the first line as it is
     fd10.write(fd.readline())
@@ -273,7 +289,8 @@ def gen_figure10_csv(path, thp, absolute):
     if absolute:
         prefix="Absolute"
 
-    print("%s: %s" %(prefix, fd10_path))
+    if verbose:
+		print("%s: %s" %(prefix, fd10_path))
 
 def gen_figure9_csv(path, thp, absolute):
     # --- put it under evaluation
@@ -291,15 +308,16 @@ def gen_figure9_csv(path, thp, absolute):
         out_file = os.path.join(out_file, "figure9a" + path_suffix + ".csv")
 
     fd9_path = os.path.join(os.getcwd(), out_file)
-    fd9 = open(fd9_path, "w")
+    fd9 = open_file(fd9_path, "w")
     if fd9 is None:
         print("ERROR creating %s." %out_file)
         sys.exit()
 
-    fd = open(path, "r")
+    fd = open_file(path, "r")
     if fd is None:
-        print("ERROR unable to open the common csv file")
-        sys.exit()
+        #print("ERROR unable to open the common csv file")
+        #sys.exit()
+        return
 
     # --- copy the first line as it is
     fd9.write(fd.readline())
@@ -326,15 +344,17 @@ def gen_figure9_csv(path, thp, absolute):
     prefix="Normalized"
     if absolute:
         prefix="Absolute"
-
-    print("%s: %s" %(prefix, fd9_path))
+    if verbose:
+		print("%s: %s" %(prefix, fd9_path))
     
 if __name__=="__main__":
-    root = os.path.dirname(os.path.dirname(os.path.realpath(__file__)))
-    print(root)
-    out_dir = os.path.join(root, "evaluation/measured")
+    global verbose
+    verbose = True
+    if len(sys.argv) == 2 and sys.argv[1] == "--quiet":
+		verbose = False
 
-    print("Reading dumps for Figure-6 and Figure-10")
+    root = os.path.dirname(os.path.dirname(os.path.realpath(__file__)))
+    out_dir = os.path.join(root, "evaluation/measured")
 
     for figure in figures:
         exp_dir = os.path.join(out_dir, figure)
@@ -346,34 +366,39 @@ if __name__=="__main__":
 
     norm_src = os.path.join(out_dir, "common_normalized.csv")
     abs_src = os.path.join(out_dir, "common_absolute.csv")
-    fd_norm = open(norm_src, "w")
-    fd_abs = open(abs_src, "w")
+    fd_norm = open_file(norm_src, "w")
+    fd_abs = open_file(abs_src, "w")
     if fd_norm is None or fd_abs is None:
-        print("ERROR creating csv file")
+        print("ERROR creating output files")
         sys.exit()
 
     # --- process normalized data
     process_all_runs(fd_norm, summary, False)
     process_all_runs(fd_abs, summary, True)
-    print("Generating Figure-6 csv file")
+    if verbose:
+		print("Processing Figure-6 csv file")
     # --- process absolute and normalized separately
     gen_figure6_csv(norm_src, False)
     gen_figure6_csv(abs_src, True)
 
     # --- process absolute and normalized separately
-    print("Generating Figure-10(a) csv file")
+    if verbose:
+		print("Processing Figure-10(a) csv file")
     gen_figure10_csv(norm_src, False, False) # --- Fig-a/Fig-b and absolute/nomalized
     gen_figure10_csv(abs_src, False, True) # --- Fig-a/Fig-b and absolute/nomalized
-    print("Generating Figure10(b) csv file")
+    if verbose:
+		print("Processing Figure10(b) csv file")
     gen_figure10_csv(norm_src, True, False) # --- Fig-a/Fig-b and absolute/nomalized
     gen_figure10_csv(abs_src, True, True) # --- Fig-a/Fig-b and absolute/nomalized
 
 
 	# --- process absolute and normalized separately
-    print("Generating Figure-9(a) csv file")
+    if verbose:
+		print("Processing Figure-9(a) csv file")
     gen_figure9_csv(norm_src, False, False) # --- Fig-a/Fig-b and absolute/nomalized
     gen_figure9_csv(abs_src, False, True) # --- Fig-a/Fig-b and absolute/nomalized
-    print("Generating Figure-9(b) csv file")
+    if verbose:
+		print("Processing Figure-9(b) csv file")
     gen_figure9_csv(norm_src, True, False) # --- Fig-a/Fig-b and absolute/nomalized
     gen_figure9_csv(abs_src, True, True) # --- Fig-a/Fig-b and absolute/nomalized
 
