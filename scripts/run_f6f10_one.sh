@@ -244,6 +244,18 @@ launch_interference()
 	fi
 }
 
+prepare_datasets()
+{
+	SCRIPTS=$(readlink -f "`dirname $(readlink -f "$0")`")
+        ROOT="$(dirname "$SCRIPTS")"
+	# --- only for canneal and liblinear
+	if [ $1 == "canneal" ]; then
+		$ROOT/datasets/prepare_canneal_datasets.sh small
+	elif [ $1 == "liblinear" ]; then
+		$ROOT/datasets/prepare_liblinear_dataset.sh
+	fi
+}
+
 launch_benchmark_config()
 {
 	# --- clean up exisiting state/processes
@@ -293,6 +305,7 @@ validate_benchmark_config $BENCHMARK $CONFIG
 prepare_benchmark_name $BENCHMARK
 prepare_basic_config_params $CONFIG
 prepare_all_pathnames
+prepare_datasets $BENCHMARK
 set_system_configs $CONFIG
 
 # --- finally, launch the job
