@@ -96,7 +96,7 @@ prepare_all_pathnames()
         DATADIR=$ROOT"/evaluation/TOY/GUPS"
         thp=$(cat /sys/kernel/mm/transparent_hugepage/enabled)
         thp=$(echo $thp | awk '{print $1}')
-        RUNDIR=$DATADIR/$(hostname)-config-$CONFIG-$(date +"%Y%m%d-%H%M%S")
+        RUNDIR=$DATADIR/$(hostname)-config-GUPSTOY-$CONFIG-$(date +"%Y%m%d-%H%M%S")
 
         mkdir -p $RUNDIR
         if [ $? -ne 0 ]; then

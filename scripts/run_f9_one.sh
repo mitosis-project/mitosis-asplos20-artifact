@@ -86,7 +86,7 @@ test_and_set_pathnames()
                 exit
         fi
 	DATADIR=$ROOT"/evaluation/measured/figure9/$BENCHMARK"
-        RUNDIR=$DATADIR/$(hostname)-config-$CONFIG-$(date +"%Y%m%d-%H%M%S")
+        RUNDIR=$DATADIR/$(hostname)-config-$BENCHMARK-$CONFIG-$(date +"%Y%m%d-%H%M%S")
 	mkdir -p $RUNDIR
         if [ $? -ne 0 ]; then
                 echo "Error creating output directory: $RUNDIR"
