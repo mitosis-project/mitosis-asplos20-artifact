@@ -1,7 +1,7 @@
 #!/bin/bash
 
 ###############################################################################
-# Script to run Figure 6 Evaluation of the paper
+# Script to run Figure 9 Evaluation of the paper
 # 
 # Paper: Mitosis - Mitosis: Transparently Self-Replicating Page-Tables 
 #                  for Large-Memory Machines
