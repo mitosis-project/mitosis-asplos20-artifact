@@ -11,16 +11,19 @@ benchmarks = []
 global verbose
 # --- directories that contain the data
 #figures = ["figure6", "figure9", "figure10"]
-figures = ["figure6", "figure10", "figure9"]
+figures = ["figure6", "figure10", "figure9", "figure11"]
 
 # --- all workload configurations
 configs = ["LPLD", "LPRD", "LPRDI", "RPLD", "RPILD", "RPRD", "RPIRDI", "RPLDM", "RPILDM",
             "TLPLD", "TLPRD", "TLPRDI", "TRPLD", "TRPILD", "TRPRD", "TRPIRDI", "TRPLDM", "TRPILDM",
-			"F", "FM", "FA", "FAM", "I", "IM", "TF", "TFM", "TFA", "TFAM", "TI", "TIM"]
+            "FTLPLD", "FTRPILD", "FTRPILDM",
+            "F", "FM", "FA", "FAM", "I", "IM", "TF", "TFM", "TFA", "TFAM", "TI", "TIM"]
 
 pretty_configs = ["LP-LD", "LP-RD", "LP-RDI", "RP-LD", "RPI-LD", "RP-RD", "RPI-RDI", "RP-LDM", "RPI-LD+M",
             "TLP-LD", "TLP-RD", "TLP-RDI", "TRP-LD", "TRPI-LD", "TRP-RD", "TRPI-RDI", "TRP-LD+M", "TRPI-LD+M",
-			"F", "F+M", "F-A", "F-A+M", "I", "I+M", "TF", "TF+M", "TF-A", "TF-A+M", "TI", "TI+M"]
+            "FTLP-LD", "FTRPI-LD", "FTRPI-LD+M",
+            "F", "F+M", "F-A", "F-A+M", "I", "I+M", "TF", "TF+M", "TF-A", "TF-A+M", "TI", "TI+M"]
+
 # --- all workloads
 workloads = ["gups", "btree", "hashjoin", "redis", "xsbench", "pagerank", "liblinear", "canneal", "memcached", "graph500"]
 pretty_workloads = ["GUPS", "BTree", "HashJoin", "Redis", "XSBench", "PageRank", "LibLinear", "Canneal", "Memcached", "Graph500"]
@@ -346,7 +349,50 @@ def gen_figure9_csv(path, thp, absolute):
         prefix="Absolute"
     if verbose:
 		print("%s: %s" %(prefix, fd9_path))
-    
+
+def gen_figure11_csv(path, absolute):
+    # --- put it under evaluation
+    root = os.path.dirname(os.path.dirname(os.path.realpath(__file__)))
+    fd11_path = os.path.join(root, "evaluation/measured/figure11/figure11_normalized.csv")
+    if absolute:
+        fd11_path = os.path.join(root, "evaluation/measured/figure11/figure11_absolute.csv")
+
+    fd11 = open_file(fd11_path, "w")
+    if fd11 is None:
+        #print("ERROR creating %s." %fd6_path)
+        #sys.exit()
+        return
+
+    #fd = open(path, "r")
+    fd = open_file(path, "r")
+    if fd is None:
+        #print("ERROR unable to open the common csv file")
+        #sys.exit()
+        return
+
+    fig11_configs = ["FTLP-LD", "FTRPI-LD", "FTRPI-LD+M"]
+    # --- copy the first line as it is
+    fd11.write(fd.readline())
+    line = fd.readline()
+    while line:
+        columns = line.split()
+        valid = False
+        if columns[1] in fig11_configs:
+            fd11.write(columns[0])
+            fd11.write("\t" + columns[1][1:])
+            for i in range(2, len(columns)):
+                fd11.write("\t" + columns[i])
+            fd11.write("\n")
+
+
+        line = fd.readline()
+
+    fd.close()
+    fd11.close()
+    if verbose:
+		print("Location: %s" %fd11_path)
+
+
 if __name__=="__main__":
     global verbose
     verbose = True
@@ -401,6 +447,12 @@ if __name__=="__main__":
 		print("Processing Figure-9(b) csv file")
     gen_figure9_csv(norm_src, True, False) # --- Fig-a/Fig-b and absolute/nomalized
     gen_figure9_csv(abs_src, True, True) # --- Fig-a/Fig-b and absolute/nomalized
+
+    if verbose:
+		print("Processing Figure-11 csv file")
+
+    gen_figure11_csv(norm_src, False)
+    gen_figure11_csv(abs_src, True)
 
     fd_norm.close()
     fd_abs.close()
