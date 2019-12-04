@@ -235,10 +235,14 @@ launch_interference()
         if [ $LAST_CHAR == "M" ]; then
             CURR_CONFIG=${CURR_CONFIG::-1}
         fi
+	FIRST_CHAR=${CURR_CONFIG:0:1}
+	if [ $FIRST_CHAR == "T" ]; then
+		CURR_CONFIG=${CURR_CONFIG:1}
+	fi
 	if [ $CURR_CONFIG == "LPRDI" ] || [ $CURR_CONFIG == "RPILD" ] || [ $CURR_CONFIG == "RPIRDI" ]; then
 		$NUMACTL -c $INT_NODE -m $INT_NODE $INT_BIN > /dev/null 2>&1 &
 		if [ $? -ne 0 ]; then
-			echo "Failure launching interference"
+			echo "Failure launching interference."
 			exit
 		fi
 	fi
