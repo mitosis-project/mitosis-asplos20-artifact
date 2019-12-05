@@ -74,11 +74,16 @@ def process_perf_log(path):
         line = fd.readline()
         if not line:
             break
-        if ",cycles," in line:
+        # --- handle different perf formats
+        if ",cycles," in line or ",cycles:u," in line or ",cycles:k" in line:
             cycles=int(line[:line.find(",")])
-        elif ",dtlb_load_misses.walk_duration," in  line:
+        elif ",dtlb_load_misses.walk_duration," in  line or \
+        ",dtlb_load_misses.walk_duration:u," in line or \
+        ",dtlb_load_misses.walk_duration:k," in line:
             dtlb_miss_cycles += int(line[:line.find(",")])
-        elif ",dtlb_store_misses.walk_duration," in line:
+        elif ",dtlb_store_misses.walk_duration," in line or \
+        ",dtlb_store_misses.walk_duration:u," in line or \
+        ",dtlb_store_misses.walk_duration:k," in line:
             dtlb_miss_cycles += int(line[:line.find(",")])
         elif "Execution Time (seconds)" in line:
             exec_time = get_time_from_log(line)
@@ -378,12 +383,10 @@ def gen_figure11_csv(path, absolute):
         columns = line.split()
         valid = False
         if columns[1] in fig11_configs:
-            fd11.write(columns[0])
-            fd11.write("\t" + columns[1][1:])
-            for i in range(2, len(columns)):
-                fd11.write("\t" + columns[i])
+            # --- strip off the first character from configuration name
+            columns[1] = columns[1][1:]
+            fd11.write("\t".join(columns))
             fd11.write("\n")
-
 
         line = fd.readline()
 
