@@ -40,7 +40,8 @@ def open_file(src, op):
         return fd
     except:
         if verbose:
-            print("Unable to open %s in %s mode" %(src, op))
+            #print("Unable to open %s in %s mode" %(src, op))
+            pass
         return None
 
 def print_workload_config(log):
@@ -262,8 +263,9 @@ def gen_figure10_csv(path, thp, absolute):
     fd10_path = os.path.join(os.getcwd(), out_file)
     fd10 = open_file(fd10_path, "w")
     if fd10 is None:
-        print("ERROR creating %s." %out_file)
-        sys.exit()
+        #print("ERROR creating %s." %out_file)
+        #sys.exit()
+        return
 
     fd = open_file(path, "r")
     if fd is None:
@@ -318,8 +320,9 @@ def gen_figure9_csv(path, thp, absolute):
     fd9_path = os.path.join(os.getcwd(), out_file)
     fd9 = open_file(fd9_path, "w")
     if fd9 is None:
-        print("ERROR creating %s." %out_file)
-        sys.exit()
+        #print("ERROR creating %s." %out_file)
+        #sys.exit()
+        return
 
     fd = open_file(path, "r")
     if fd is None:
