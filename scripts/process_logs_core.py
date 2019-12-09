@@ -1,7 +1,7 @@
 #!/usr/bin/python
 import sys
 import os
-import statistics
+#import statistics
 
 benchmarks = dict()
 curr_bench = ""
@@ -149,9 +149,9 @@ def dump_workload_config_average(output, bench, config, fd, absolute):
             return
 
 
-    stdev = 0
-    if count > 1:
-        stdev = statistics.stdev(arr_cycles)
+    #stdev = 0
+    #if count > 1:
+    #    stdev = statistics.stdev(arr_cycles)
         
     # --- take the average
     cycles = cycles/count
@@ -185,7 +185,7 @@ def dump_workload_config_average(output, bench, config, fd, absolute):
     norm_cycles = (pwc / float(baseline))
     rest_cycles = norm_perf - norm_cycles #(cycles-pwc)/float(baseline)
     # --- normalize std dev
-    stdev = stdev / float(baseline)
+    #stdev = stdev / float(baseline)
     #line = "%s\t%s\t%f\t%f\t%f\t%f" % (bench, config, norm_cycles, rest_cycles, stdev, norm_perf)
     line = "%s\t%s\t%f\t%f\t%f" % (pretty(bench), pretty(config), norm_cycles, rest_cycles, norm_perf)
     fd.write(line + "\n")
@@ -439,7 +439,7 @@ if __name__=="__main__":
     gen_figure10_csv(norm_src, False, False) # --- Fig-a/Fig-b and absolute/nomalized
     gen_figure10_csv(abs_src, False, True) # --- Fig-a/Fig-b and absolute/nomalized
     if verbose:
-		print("Processing Figure10(b) csv file")
+		print("Processing Figure-10(b) csv file")
     gen_figure10_csv(norm_src, True, False) # --- Fig-a/Fig-b and absolute/nomalized
     gen_figure10_csv(abs_src, True, True) # --- Fig-a/Fig-b and absolute/nomalized
 
