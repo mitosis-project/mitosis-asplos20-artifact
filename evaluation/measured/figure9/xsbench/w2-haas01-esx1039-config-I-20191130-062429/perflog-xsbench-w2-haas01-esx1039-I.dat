@@ -1,1 +1,0 @@
-/home/ashish/mitosis-asplos20-artifact/bin/numactl --interleaving=3 /home/ashish/mitosis-asplos20-artifact/bin/bench_xsbench_mt -- -p 25000000 -g 920000
