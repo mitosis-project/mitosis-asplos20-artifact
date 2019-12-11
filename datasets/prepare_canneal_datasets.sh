@@ -51,7 +51,7 @@ fi
 if [ $GEN_LARGE -eq 1 ]; then
 	if [ ! -e $ROOT/canneal_large ]; then
 		echo "Generating large dataset for canneal. This will take a while..."
-		$SRC_SCRIPT 100000 11000 1000000000 > $ROOT/canneal_large
+		$SRC_SCRIPT 120000 11000 1200000000 > $ROOT/canneal_large
 		echo "Dataset is ready now."
 	fi
 fi
