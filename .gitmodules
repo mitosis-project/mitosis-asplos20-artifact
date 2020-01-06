@@ -9,4 +9,4 @@
 	url = git@github.com:achreto/mitosis-asplos20-workloads.git
 [submodule "sources/mitosis-page-table-dump"]
 	path = sources/mitosis-page-table-dump
-	url = git@github.com:achreto/mitosis-page-table-dump.git
+	url = git@github.com:mitosis-project/mitosis-page-table-dump.git
