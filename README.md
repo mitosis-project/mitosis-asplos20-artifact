@@ -69,6 +69,7 @@ sudo apt-get install build-essential libncurses-dev \
 In addition the following python libraries, installed with pip
 
 ```
+pip3 install wheel
 pip3 install zenodo-get
 
 ```
