@@ -93,7 +93,13 @@ To obtain the pre-compiled binaries execute:
 ./scripts/download_binaries.sh
 ```
 The pre-compiled binaries are available on [Zenodo.org](https://zenodo.org/record/3558908). 
-You can download them manually and place them in the `precompiled` directory. 
+You can download them manually and place them in the `precompiled` directory.
+
+There are several binaries available on Zenodo:
+
+ * `bench_*` are the benchmarks used in the paper
+ * `page_table_dump/numactl/perf` are helper utilities for collecting stats
+ * `linux-*.deb` are the linux kernel image and headers with Mitosis modifications.
 
 
 Obtaining Source Code and Compile
@@ -103,7 +109,8 @@ If you don't want to compile from scratch, you can skip this section.
 
 The source code for the Linux kernel and evaluated worloads are available on 
 GitHub. To obtain the source code you can initialize the corresponding git 
-submodules. **Note: the repositories are private at this moment**
+submodules. **Note: the repositories are private at this moment, as they are not
+ready for public release.**
 
 ```
 git submodule init
@@ -145,12 +152,19 @@ It's best to compile it on the machine runnig Mitosis-Linux.
 ```
 make mitosis-page-table-dump
 ```
+
+
 Deploying
 ---------
 
-To deploy the binaries and scripts, just clone the repository on the target 
-machine. Or you can set your target host-name and directory in 
-`./scripts/site_config.sh`
+Just clonse the artifact on the machine you want to run it on. 
+
+**For deploying on a remote machine only.**
+
+To deploy the binaries and scripts on a remote machine, just clone the 
+repository locally, and specify the target host-name you want to run the
+artifact on in `./scripts/site_config.sh`. Then run the following script 
+locally. 
 
 ```
 ./scripts/deploy.sh
@@ -242,5 +256,11 @@ the reference data shown in the paper:
 Paper Citation
 --------------
 
-TBD
+Reto Achermann, Ashish Panwar, Abhishek Bhattacharjee, Timothy
+Roscoe, and Jayneel Gandhi. 2020. Mitosis: Transparently Self-
+Replicating Page-Tables for Large-Memory Machines. In Proceed-
+ings of the Twenty-Fifth International Conference on Architectural
+Support for Programming Languages and Operating Systems (ASP-
+LOS ’20), March 16–20, 2020, Lausanne, Switzerland. ACM, New
+York, NY, USA, 18 pages. https://doi.org/10.1145/3373376.3378468
 
