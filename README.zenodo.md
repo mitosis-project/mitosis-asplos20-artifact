@@ -28,7 +28,13 @@ See LICENSE file.
 Directory Structure
 -------------------
 
- * `mitosis-asplos20-artifact.zip` contains all scripts and binaries for the artifact. 
+ * `mitosis-asplos20-artifact.zip` contains all scripts and binaries for the artifact.
+
+
+Installation Steps
+------------------
+
+Download `mitosis-asplos20-artifact.zip` and extract it.
 
 
 Hardware Dependencies
