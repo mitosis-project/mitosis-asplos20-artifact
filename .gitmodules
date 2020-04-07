@@ -1,12 +1,12 @@
 [submodule "sources/mitosis-linux"]
 	path = sources/mitosis-linux
-	url = git@github.com:achreto/mitosis-asplos20-linux.git
+	url = https://@github.com/achreto/mitosis-asplos20-linux.git
 [submodule "sources/mitosis-numactl"]
 	path = sources/mitosis-numactl
-	url = git@github.com:mitosis-project/mitosis-numactl.git
+	url = https://github.com/mitosis-project/mitosis-numactl.git
 [submodule "sources/mitosis-workloads"]
 	path = sources/mitosis-workloads
-	url = git@github.com:achreto/mitosis-asplos20-workloads.git
+	url = https://github.com/achreto/mitosis-asplos20-workloads.git
 [submodule "sources/mitosis-page-table-dump"]
 	path = sources/mitosis-page-table-dump
-	url = git@github.com:mitosis-project/mitosis-page-table-dump.git
+	url = https://github.com/mitosis-project/mitosis-page-table-dump.git
