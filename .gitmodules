@@ -1,6 +1,6 @@
 [submodule "sources/mitosis-linux"]
 	path = sources/mitosis-linux
-	url = https://@github.com/achreto/mitosis-asplos20-linux.git
+	url = https://github.com/mitosis-project/mitosis-linux.git
 [submodule "sources/mitosis-numactl"]
 	path = sources/mitosis-numactl
 	url = https://github.com/mitosis-project/mitosis-numactl.git
