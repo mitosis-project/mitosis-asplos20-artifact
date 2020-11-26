@@ -1,7 +1,7 @@
 #!/bin/bash
 
 ###############################################################################
-# Script to get kdd2012 public dataset for LibLinear
+# Script to generate small and large datasets for canneal
 # 
 # Paper: Mitosis - Mitosis: Transparently Self-Replicating Page-Tables 
 #                  for Large-Memory Machines
